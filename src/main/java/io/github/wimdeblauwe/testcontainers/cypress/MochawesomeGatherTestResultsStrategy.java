@@ -12,6 +12,7 @@ import java.nio.file.attribute.BasicFileAttributes;
 public class MochawesomeGatherTestResultsStrategy implements GatherTestResultsStrategy {
     private static final Logger LOGGER = LoggerFactory.getLogger(MochawesomeGatherTestResultsStrategy.class);
 
+    private final ObjectMapper objectMapper = new ObjectMapper();
     private final Path xmlReportsPath;
 
     public MochawesomeGatherTestResultsStrategy() {
@@ -24,10 +25,12 @@ public class MochawesomeGatherTestResultsStrategy implements GatherTestResultsSt
 
     @Override
     public CypressTestResults gatherTestResults() throws IOException {
+        if (LOGGER.isDebugEnabled()) {
+            LOGGER.debug("Reading Mochawesome report files from {}", xmlReportsPath.toAbsolutePath());
+        }
+
         CypressTestResults results = new CypressTestResults();
 
-        ObjectMapper objectMapper = new ObjectMapper();
-        LOGGER.debug("Reading Mochawesome report files from {}", xmlReportsPath.toAbsolutePath().toString());
         try (DirectoryStream<Path> paths = Files.newDirectoryStream(xmlReportsPath)) {
             for (Path path : paths) {
                 MochawesomeSpecRunReport specRunReport = objectMapper.readValue(path.toFile(), MochawesomeSpecRunReport.class);
@@ -57,7 +60,7 @@ public class MochawesomeGatherTestResultsStrategy implements GatherTestResultsSt
 
     @JsonIgnoreProperties(ignoreUnknown = true)
     private static class MochawesomeSpecRunReport {
-        public Stats stats;
+        private Stats stats;
 
         public Stats getStats() {
             return stats;
