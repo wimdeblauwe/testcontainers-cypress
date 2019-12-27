@@ -1,0 +1,124 @@
+{
+  "stats": {
+    "suites": 1,
+    "tests": 2,
+    "passes": 2,
+    "pending": 0,
+    "failures": 0,
+    "start": "2019-12-27T11:41:19.920Z",
+    "end": "2019-12-27T11:41:22.653Z",
+    "duration": 2733,
+    "testsRegistered": 2,
+    "passPercent": 100,
+    "pendingPercent": 0,
+    "other": 0,
+    "hasOther": false,
+    "skipped": 0,
+    "hasSkipped": false
+  },
+  "results": [
+    {
+      "uuid": "d3aac4ef-f3f3-4472-928a-231293a49209",
+      "title": "",
+      "fullFile": "",
+      "file": "",
+      "beforeHooks": [],
+      "afterHooks": [],
+      "tests": [],
+      "suites": [
+        {
+          "uuid": "fb69ce88-2416-447f-a3b8-ce1aace267f7",
+          "title": "Verify Email Address",
+          "fullFile": "",
+          "file": "",
+          "beforeHooks": [],
+          "afterHooks": [],
+          "tests": [
+            {
+              "title": "should show error message if no code in url",
+              "fullTitle": "Verify Email Address should show error message if no code in url",
+              "timedOut": null,
+              "duration": 1810,
+              "state": "passed",
+              "speed": "slow",
+              "pass": true,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "cy.visit('registration/verifyemail');\ncy.get('#error-message').should('have.text', 'There is no code present to check. Make sure you are using the correct URL.');\ncy.viewport('macbook-15');\ncy.screenshot('desktop/no-code-present');\ncy.viewport('iphone-6+');\ncy.screenshot('mobile/no-code-present');",
+              "err": {},
+              "uuid": "b1b82363-a9d6-47e0-85db-7702eb17b7a4",
+              "parentUUID": "fb69ce88-2416-447f-a3b8-ce1aace267f7",
+              "isHook": false,
+              "skipped": false
+            },
+            {
+              "title": "should show error message if code is unknown",
+              "fullTitle": "Verify Email Address should show error message if code is unknown",
+              "timedOut": null,
+              "duration": 887,
+              "state": "passed",
+              "speed": "slow",
+              "pass": true,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "cy.visit('registration/verifyemail?code=abcdefghijklmnopqrst');\ncy.get('#error-message').should('have.text', 'The code abcdefghijklmnopqrst is not known in the system.');\ncy.viewport('macbook-15');\ncy.screenshot('desktop/unknown-code');\ncy.viewport('iphone-6+');\ncy.screenshot('mobile/unknown-code');",
+              "err": {},
+              "uuid": "61d5fbed-cc7f-40dd-9c33-f345e14d262b",
+              "parentUUID": "fb69ce88-2416-447f-a3b8-ce1aace267f7",
+              "isHook": false,
+              "skipped": false
+            }
+          ],
+          "suites": [],
+          "passes": [
+            "b1b82363-a9d6-47e0-85db-7702eb17b7a4",
+            "61d5fbed-cc7f-40dd-9c33-f345e14d262b"
+          ],
+          "failures": [],
+          "pending": [],
+          "skipped": [],
+          "duration": 2697,
+          "root": false,
+          "rootEmpty": false,
+          "_timeout": 2000
+        }
+      ],
+      "passes": [],
+      "failures": [],
+      "pending": [],
+      "skipped": [],
+      "duration": 0,
+      "root": true,
+      "rootEmpty": true,
+      "_timeout": 2000
+    }
+  ],
+  "meta": {
+    "mocha": {
+      "version": "6.2.2"
+    },
+    "mochawesome": {
+      "options": {
+        "quiet": false,
+        "reportFilename": "mochawesome",
+        "saveHtml": false,
+        "saveJson": true,
+        "consoleReporter": "spec",
+        "useInlineDiffs": false
+      },
+      "version": "4.1.0"
+    },
+    "marge": {
+      "options": {
+        "id": "default",
+        "reportDir": "cypress/reports/mochawesome",
+        "overwrite": false,
+        "html": false,
+        "json": true
+      },
+      "version": "4.1.0"
+    }
+  }
+}

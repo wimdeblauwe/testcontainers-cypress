@@ -1,0 +1,143 @@
+= Cypress Testcontainer
+
+== Goal
+
+The goal of this project is to make it easy to start https://www.cypress.io/[Cypress] tests via https://www.testcontainers.org/[Testcontainers].
+
+== Example usage
+
+=== Setup Cypress
+
+. Create `src/test/e2e` directory in your project.
+. Run `npm init` in that directory. This will generate a `package.json` file.
+. Run `npm install cypress --save-dev` to install Cypress as a development dependency.
+. Run `npx cypress open` to start the Cypress application. It will notice that this is the first startup and add some example tests.
+. Run `npm install cypress-multi-reporters mocha mochawesome --save-dev` to install Mochawesome as a test reporter. Testcontainers-cypress will
+use that to parse the results of the Cypress tests.
+. Update `cypress.json` as follows:
++
+[source,json]
+----
+{
+  "baseUrl": "http://localhost:8080",
+  "reporter": "cypress-multi-reporters",
+  "reporterOptions": {
+    "configFile": "reporter-config.json"
+  }
+}
+----
+. Create a `reporter-config.json` file (next to `cypress.json`) and ensure it contains:
++
+[source,json]
+----
+{
+  "reporterEnabled": "spec, mochawesome",
+  "mochawesomeReporterOptions": {
+    "reportDir": "cypress/reports/mochawesome",
+    "overwrite": false,
+    "html": false,
+    "json": true
+  }
+}
+----
+
+
+
+=== Add dependency
+
+==== Maven
+
+Use this dependency if you use Maven:
+
+[source,xml]
+----
+<dependency>
+  <groupId>io.github.wimdeblauwe</groupId>
+  <artifactId>testcontainers-cypress</artifactId>
+  <version>${tc-cypress.version}</version>
+  <scope>test</scope>
+</dependency>
+----
+
+==== Gradle
+
+For Gradle, use the following dependency:
+
+[source, groovy]
+----
+testImplementation 'io.github.wimdeblauwe:testcontainers-cypress:${tc-cypress.version}'
+----
+
+=== Usage with a @SpringBootTest
+
+The library is not tied to Spring Boot, but I will use the example of a `@SpringBootTest`
+to explain how to use it.
+
+Suppose you have a Spring Boot application that has server-side rendered templates using Thymeleaf, and
+you want to write some UI tests using Cypress. We want to drive all this from a JUnit based test, so we do the following:
+
+. Have Spring Boot start the complete application in a test. This is easy using the `@SpringBootTest` annotation on a JUnit test.
+. Expose the web port that was opened towards Testcontainers so that Cypress that is running in a Docker container can access
+our started web application.
+. Start the Docker container to run the Cypress tests.
+. Wait for the tests to be done and report the results to JUnit.
+
+Start by writing the following JUnit test:
+
+[source,java]
+----
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT) //<.>
+@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE) //<.>
+public class CypressEndToEndTests {
+
+    @LocalServerPort //<.>
+    private int port;
+
+     @Test
+    void runCypressTests() throws InterruptedException, IOException, TimeoutException {
+
+        Testcontainers.exposeHostPorts(port); //<.>
+
+        try (CypressContainer container = new CypressContainer().withLocalServerPort(port)) { //<.>
+            container.start();
+            CypressTestResults testResults = container.getTestResults(); //<.>
+
+            if (testResults.getNumberOfFailingTests() > 0) {
+                fail("There was a failure running the Cypress tests!\n\n" + testResults); //<.>
+            }
+        }
+    }
+}
+----
+<.> Have Spring Boot start the full application on a random port.
+<.> Tell Spring Boot to _not_ configure a test database,  Because we use a real database (via Testcontainers obviously :-) ).
+<.> Have Spring inject the random port that was used when starting the application.
+<.> Ensures that the container will be able to access the Spring Boot application that is started via @SpringBootTest
+<.> Create the `CypressContainer` and pass in the `port` so the base URL that Cypress will use is correct.
+<.> Wait on the tests and get the results.
+<.> Check if there have been failures in Cypress. If so, fail the test.
+
+== Development
+
+* Builds are done on Travis: https://travis-ci.org/wimdeblauwe/testcontainers-cypress
+* Code quality is available via SonarQube: https://sonarcloud.io/dashboard?id=org.wimdeblauwe%3Atestcontainers-cypress
+
+== Deployment
+
+* SNAPSHOT versions are put on https://oss.sonatype.org/content/repositories/snapshots
+* All releases can be downloaded from https://oss.sonatype.org/content/groups/public
+
+== Release
+
+Release is done via the Maven Release Plugin:
+
+`mvn release:prepare`
+
+and
+
+`mvn release:perform`
+
+[NOTE]
+====
+Before releasing, run `export GPG_TTY=$(tty)`
+====

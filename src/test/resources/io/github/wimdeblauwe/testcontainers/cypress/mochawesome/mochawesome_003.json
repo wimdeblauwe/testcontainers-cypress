@@ -1,0 +1,226 @@
+{
+  "stats": {
+    "suites": 2,
+    "tests": 6,
+    "passes": 5,
+    "pending": 0,
+    "failures": 1,
+    "start": "2019-12-27T11:41:39.393Z",
+    "end": "2019-12-27T11:41:45.664Z",
+    "duration": 6271,
+    "testsRegistered": 6,
+    "passPercent": 83.33333333333334,
+    "pendingPercent": 0,
+    "other": 0,
+    "hasOther": false,
+    "skipped": 0,
+    "hasSkipped": false
+  },
+  "results": [
+    {
+      "uuid": "dbf664eb-1df9-4cb2-954c-9c66c97bc236",
+      "title": "",
+      "fullFile": "",
+      "file": "",
+      "beforeHooks": [],
+      "afterHooks": [],
+      "tests": [],
+      "suites": [
+        {
+          "uuid": "9baa9934-1ea3-4c1c-a94c-b5056e46cdc0",
+          "title": "Misc",
+          "fullFile": "",
+          "file": "",
+          "beforeHooks": [],
+          "afterHooks": [],
+          "tests": [
+            {
+              "title": ".end() - end the command chain",
+              "fullTitle": "Misc .end() - end the command chain",
+              "timedOut": null,
+              "duration": 785,
+              "state": "passed",
+              "speed": "slow",
+              "pass": true,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "// https://on.cypress.io/end\n// cy.end is useful when you want to end a chain of commands\n// and force Cypress to re-query from the root element\ncy.get('.misc-table').within(function () {\n  // ends the current chain and yields null\n  cy.contains('Cheryl').click().end(); // queries the entire table again\n  cy.contains('Charles').click();\n});",
+              "err": {},
+              "uuid": "9d791e9a-1b3b-48bf-acc1-f36ee4d05f3c",
+              "parentUUID": "9baa9934-1ea3-4c1c-a94c-b5056e46cdc0",
+              "isHook": false,
+              "skipped": false
+            },
+            {
+              "title": "cy.exec() - execute a system command",
+              "fullTitle": "Misc cy.exec() - execute a system command",
+              "timedOut": null,
+              "duration": 670,
+              "state": "failed",
+              "speed": null,
+              "pass": false,
+              "fail": true,
+              "pending": false,
+              "context": null,
+              "code": "// https://on.cypress.io/exec\n// execute a system command.\n// so you can take actions necessary for\n// your test outside the scope of Cypress.\ncy.exec('echo Jane Lane').its('stdout').should('contain', 'Jane Lane'); // we can use Cypress.platform string to\n// select appropriate command\n// https://on.cypress/io/platform\ncy.log(\"Platform \".concat(Cypress.platform, \" architecture \").concat(Cypress.arch));\nif (Cypress.platform === 'win32') {\n  cy.exec('print cypress.json').its('stderr').should('be.empty');\n} else {\n  cy.exec('cat cypress.json').its('stderr').should('be.empty');\n  cy.exec('pwd').its('code').should('eq', 0);\n}",
+              "err": {
+                "message": "CypressError: cy.exec('echo Jane Lane') failed with the following error:\n\n> \"Error: Command failed: /bin/sh -c which bash\ninternal/modules/cjs/loader.js:628\n    throw err;\n    ^\n\nError: Cannot find module '../'\nRequire stack:\n- /e2e/node_modules/.bin/which\n    at Function.Module._resolveFilename (internal/modules/cjs/loader.js:625:15)\n    at Function.Module._load (internal/modules/cjs/loader.js:527:27)\n    at Module.require (internal/modules/cjs/loader.js:683:19)\n    at require (internal/modules/cjs/helpers.js:16:16)\n    at Object.<anonymous> (/e2e/node_modules/.bin/which:2:13)\n    at Module._compile (internal/modules/cjs/loader.js:776:30)\n    at Object.Module._extensions..js (internal/modules/cjs/loader.js:787:10)\n    at Module.load (internal/modules/cjs/loader.js:643:32)\n    at Function.Module._load (internal/modules/cjs/loader.js:556:12)\n    at Function.Module.runMain (internal/modules/cjs/loader.js:839:10) {\n  code: 'MODULE_NOT_FOUND',\n  requireStack: [ '/e2e/node_modules/.bin/which' ]\n}\n\n\"",
+                "estack": "CypressError: cy.exec('echo Jane Lane') failed with the following error:\n\n> \"Error: Command failed: /bin/sh -c which bash\ninternal/modules/cjs/loader.js:628\n    throw err;\n    ^\n\nError: Cannot find module '../'\nRequire stack:\n- /e2e/node_modules/.bin/which\n    at Function.Module._resolveFilename (internal/modules/cjs/loader.js:625:15)\n    at Function.Module._load (internal/modules/cjs/loader.js:527:27)\n    at Module.require (internal/modules/cjs/loader.js:683:19)\n    at require (internal/modules/cjs/helpers.js:16:16)\n    at Object.<anonymous> (/e2e/node_modules/.bin/which:2:13)\n    at Module._compile (internal/modules/cjs/loader.js:776:30)\n    at Object.Module._extensions..js (internal/modules/cjs/loader.js:787:10)\n    at Module.load (internal/modules/cjs/loader.js:643:32)\n    at Function.Module._load (internal/modules/cjs/loader.js:556:12)\n    at Function.Module.runMain (internal/modules/cjs/loader.js:839:10) {\n  code: 'MODULE_NOT_FOUND',\n  requireStack: [ '/e2e/node_modules/.bin/which' ]\n}\n\n\"\n    at Object.cypressErr (https://example.cypress.io/__cypress/runner/cypress_runner.js:106136:11)\n    at Object.throwErr (https://example.cypress.io/__cypress/runner/cypress_runner.js:106091:18)\n    at Object.throwErrByPath (https://example.cypress.io/__cypress/runner/cypress_runner.js:106123:17)\n    at https://example.cypress.io/__cypress/runner/cypress_runner.js:90198:23\n    at tryCatcher (https://example.cypress.io/__cypress/runner/cypress_runner.js:140400:23)\n    at Promise._settlePromiseFromHandler (https://example.cypress.io/__cypress/runner/cypress_runner.js:138336:31)\n    at Promise._settlePromise (https://example.cypress.io/__cypress/runner/cypress_runner.js:138393:18)\n    at Promise._settlePromise0 (https://example.cypress.io/__cypress/runner/cypress_runner.js:138438:10)\n    at Promise._settlePromises (https://example.cypress.io/__cypress/runner/cypress_runner.js:138513:18)\n    at Async../node_modules/bluebird/js/release/async.js.Async._drainQueue (https://example.cypress.io/__cypress/runner/cypress_runner.js:135125:16)\n    at Async../node_modules/bluebird/js/release/async.js.Async._drainQueues (https://example.cypress.io/__cypress/runner/cypress_runner.js:135135:10)\n    at Async.drainQueues (https://example.cypress.io/__cypress/runner/cypress_runner.js:135009:14)",
+                "diff": null
+              },
+              "uuid": "ac00dd72-64b5-4273-a775-3c1b614b17da",
+              "parentUUID": "9baa9934-1ea3-4c1c-a94c-b5056e46cdc0",
+              "isHook": false,
+              "skipped": false
+            },
+            {
+              "title": "cy.focused() - get the DOM element that has focus",
+              "fullTitle": "Misc cy.focused() - get the DOM element that has focus",
+              "timedOut": null,
+              "duration": 553,
+              "state": "passed",
+              "speed": "slow",
+              "pass": true,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "// https://on.cypress.io/focused\ncy.get('.misc-form').find('#name').click();\ncy.focused().should('have.id', 'name');\ncy.get('.misc-form').find('#description').click();\ncy.focused().should('have.id', 'description');",
+              "err": {},
+              "uuid": "ff90d77a-90c8-4e47-a123-68521e938aee",
+              "parentUUID": "9baa9934-1ea3-4c1c-a94c-b5056e46cdc0",
+              "isHook": false,
+              "skipped": false
+            },
+            {
+              "title": "cy.wrap() - wrap an object",
+              "fullTitle": "Misc cy.wrap() - wrap an object",
+              "timedOut": null,
+              "duration": 206,
+              "state": "passed",
+              "speed": "slow",
+              "pass": true,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "// https://on.cypress.io/wrap\ncy.wrap({\n  foo: 'bar'\n}).should('have.property', 'foo').and('include', 'bar');",
+              "err": {},
+              "uuid": "dc74f518-8669-40b3-9c55-704b64f81af6",
+              "parentUUID": "9baa9934-1ea3-4c1c-a94c-b5056e46cdc0",
+              "isHook": false,
+              "skipped": false
+            }
+          ],
+          "suites": [
+            {
+              "uuid": "67ccdc6e-fe08-4202-b31e-3c7d69ee1171",
+              "title": "Cypress.Screenshot",
+              "fullFile": "",
+              "file": "",
+              "beforeHooks": [],
+              "afterHooks": [],
+              "tests": [
+                {
+                  "title": "cy.screenshot() - take a screenshot",
+                  "fullTitle": "Misc Cypress.Screenshot cy.screenshot() - take a screenshot",
+                  "timedOut": null,
+                  "duration": 1876,
+                  "state": "passed",
+                  "speed": "slow",
+                  "pass": true,
+                  "fail": false,
+                  "pending": false,
+                  "context": null,
+                  "code": "// https://on.cypress.io/screenshot\ncy.screenshot('my-image');",
+                  "err": {},
+                  "uuid": "eff89e7f-f522-4217-9dcb-709df0130bb0",
+                  "parentUUID": "67ccdc6e-fe08-4202-b31e-3c7d69ee1171",
+                  "isHook": false,
+                  "skipped": false
+                },
+                {
+                  "title": "Cypress.Screenshot.defaults() - change default config of screenshots",
+                  "fullTitle": "Misc Cypress.Screenshot Cypress.Screenshot.defaults() - change default config of screenshots",
+                  "timedOut": null,
+                  "duration": 579,
+                  "state": "passed",
+                  "speed": "slow",
+                  "pass": true,
+                  "fail": false,
+                  "pending": false,
+                  "context": null,
+                  "code": "Cypress.Screenshot.defaults({\n  blackout: ['.foo'],\n  capture: 'viewport',\n  clip: {\n    x: 0,\n    y: 0,\n    width: 200,\n    height: 200\n  },\n  scale: false,\n  disableTimersAndAnimations: true,\n  screenshotOnRunFailure: true,\n  beforeScreenshot: function beforeScreenshot() {},\n  afterScreenshot: function afterScreenshot() {}\n});",
+                  "err": {},
+                  "uuid": "4d09c9bc-c883-4a07-8083-e4529f0cfe2c",
+                  "parentUUID": "67ccdc6e-fe08-4202-b31e-3c7d69ee1171",
+                  "isHook": false,
+                  "skipped": false
+                }
+              ],
+              "suites": [],
+              "passes": [
+                "eff89e7f-f522-4217-9dcb-709df0130bb0",
+                "4d09c9bc-c883-4a07-8083-e4529f0cfe2c"
+              ],
+              "failures": [],
+              "pending": [],
+              "skipped": [],
+              "duration": 2455,
+              "root": false,
+              "rootEmpty": false,
+              "_timeout": 2000
+            }
+          ],
+          "passes": [
+            "9d791e9a-1b3b-48bf-acc1-f36ee4d05f3c",
+            "ff90d77a-90c8-4e47-a123-68521e938aee",
+            "dc74f518-8669-40b3-9c55-704b64f81af6"
+          ],
+          "failures": [
+            "ac00dd72-64b5-4273-a775-3c1b614b17da"
+          ],
+          "pending": [],
+          "skipped": [],
+          "duration": 2214,
+          "root": false,
+          "rootEmpty": false,
+          "_timeout": 2000
+        }
+      ],
+      "passes": [],
+      "failures": [],
+      "pending": [],
+      "skipped": [],
+      "duration": 0,
+      "root": true,
+      "rootEmpty": true,
+      "_timeout": 2000
+    }
+  ],
+  "meta": {
+    "mocha": {
+      "version": "6.2.2"
+    },
+    "mochawesome": {
+      "options": {
+        "quiet": false,
+        "reportFilename": "mochawesome",
+        "saveHtml": false,
+        "saveJson": true,
+        "consoleReporter": "spec",
+        "useInlineDiffs": false
+      },
+      "version": "4.1.0"
+    },
+    "marge": {
+      "options": {
+        "id": "default",
+        "reportDir": "cypress/reports/mochawesome",
+        "overwrite": false,
+        "html": false,
+        "json": true
+      },
+      "version": "4.1.0"
+    }
+  }
+}

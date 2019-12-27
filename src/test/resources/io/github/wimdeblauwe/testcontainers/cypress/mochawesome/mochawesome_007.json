@@ -1,0 +1,109 @@
+{
+  "stats": {
+    "suites": 1,
+    "tests": 1,
+    "passes": 0,
+    "pending": 0,
+    "failures": 1,
+    "start": "2019-12-27T11:42:12.475Z",
+    "end": "2019-12-27T11:42:16.061Z",
+    "duration": 3586,
+    "testsRegistered": 1,
+    "passPercent": 0,
+    "pendingPercent": 0,
+    "other": 0,
+    "hasOther": false,
+    "skipped": 0,
+    "hasSkipped": false
+  },
+  "results": [
+    {
+      "uuid": "64780e2a-5e81-4a45-974b-dacc26385d75",
+      "title": "",
+      "fullFile": "",
+      "file": "",
+      "beforeHooks": [],
+      "afterHooks": [],
+      "tests": [],
+      "suites": [
+        {
+          "uuid": "3e306dcf-3a0e-48b7-a4fb-fe0be1ff582d",
+          "title": "Viewport",
+          "fullFile": "",
+          "file": "",
+          "beforeHooks": [],
+          "afterHooks": [],
+          "tests": [
+            {
+              "title": "cy.viewport() - set the viewport size and dimension",
+              "fullTitle": "Viewport cy.viewport() - set the viewport size and dimension",
+              "timedOut": null,
+              "duration": 2189,
+              "state": "failed",
+              "speed": null,
+              "pass": false,
+              "fail": true,
+              "pending": false,
+              "context": null,
+              "code": "// https://on.cypress.io/viewport\ncy.get('#navbar').should('be.visible');\ncy.viewport(320, 480); // the navbar should have collapse since our screen is smaller\ncy.get('#navbar').should('not.be.visible');\ncy.get('.navbar-toggle').should('be.visible').click();\ncy.get('.nav').find('a').should('be.visible'); // lets see what our app looks like on a super large screen\ncy.viewport(2999, 2999); // cy.viewport() accepts a set of preset sizes\n// to easily set the screen to a device's width and height\n// We added a cy.wait() between each viewport change so you can see\n// the change otherwise it is a little too fast to see :)\ncy.viewport('macbook-15');\ncy.screenshot('macbook-15');\ncy.get('.banner').first().screenshot('banner', {\n  padding: 10\n});\ncy.wait(200);\ncy.viewport('macbook-13');\ncy.wait(200);\ncy.viewport('macbook-11');\ncy.wait(200);\ncy.viewport('ipad-2');\ncy.wait(200);\ncy.viewport('ipad-mini');\ncy.wait(200);\ncy.viewport('iphone-6+');\ncy.wait(200);\ncy.viewport('iphone-6');\ncy.wait(200);\ncy.viewport('iphone-5');\ncy.wait(200);\ncy.viewport('iphone-4');\ncy.wait(200);\ncy.viewport('iphone-3');\ncy.wait(200); // cy.viewport() accepts an orientation for all presets\n// the default orientation is 'portrait'\ncy.viewport('ipad-2', 'portrait');\ncy.wait(200);\ncy.viewport('iphone-4', 'landscape');\ncy.wait(200); // The viewport will be reset back to the default dimensions\n// in between tests (the  default can be set in cypress.json)",
+              "err": {
+                "message": "RangeError: The value of \"offset\" is out of range. It must be >= 0 and <= 3686396. Received -40",
+                "estack": "RangeError [ERR_OUT_OF_RANGE] [ERR_OUT_OF_RANGE]: The value of \"offset\" is out of range. It must be >= 0 and <= 3686396. Received -40\n    at boundsError (internal/buffer.js:72:9)\n    at Buffer.readUInt32BE (internal/buffer.js:295:5)\n    at Jimp.<anonymous> (/root/.cache/Cypress/3.8.0/Cypress/resources/app/packages/server/node_modules/@jimp/plugin-crop/dist/index.js:46:37)\n    at scan (/root/.cache/Cypress/3.8.0/Cypress/resources/app/packages/server/node_modules/@jimp/utils/dist/index.js:46:9)\n    at Jimp.scanQuiet (/root/.cache/Cypress/3.8.0/Cypress/resources/app/packages/server/node_modules/@jimp/core/dist/index.js:1308:32)\n    at Jimp.cropQuiet (/root/.cache/Cypress/3.8.0/Cypress/resources/app/packages/server/node_modules/@jimp/plugin-crop/dist/index.js:45:12)\n    at Jimp.<computed> [as crop] (/root/.cache/Cypress/3.8.0/Cypress/resources/app/packages/server/node_modules/@jimp/core/dist/index.js:1222:23)\n    at crop (/root/.cache/Cypress/3.8.0/Cypress/resources/app/packages/server/lib/screenshots.js:145:26)\n    at /root/.cache/Cypress/3.8.0/Cypress/resources/app/packages/server/lib/screenshots.js:362:19\n    at tryCatcher (/root/.cache/Cypress/3.8.0/Cypress/resources/app/packages/server/node_modules/bluebird/js/release/util.js:16:23)\n    at Promise._settlePromiseFromHandler (/root/.cache/Cypress/3.8.0/Cypress/resources/app/packages/server/node_modules/bluebird/js/release/promise.js:547:31)\n    at Promise._settlePromise (/root/.cache/Cypress/3.8.0/Cypress/resources/app/packages/server/node_modules/bluebird/js/release/promise.js:604:18)\n    at Promise._settlePromise0 (/root/.cache/Cypress/3.8.0/Cypress/resources/app/packages/server/node_modules/bluebird/js/release/promise.js:649:10)\n    at Promise._settlePromises (/root/.cache/Cypress/3.8.0/Cypress/resources/app/packages/server/node_modules/bluebird/js/release/promise.js:729:18)\n    at _drainQueueStep (/root/.cache/Cypress/3.8.0/Cypress/resources/app/packages/server/node_modules/bluebird/js/release/async.js:93:12)\n    at _drainQueue (/root/.cache/Cypress/3.8.0/Cypress/resources/app/packages/server/node_modules/bluebird/js/release/async.js:86:9)\n    at Async._drainQueues (/root/.cache/Cypress/3.8.0/Cypress/resources/app/packages/server/node_modules/bluebird/js/release/async.js:102:5)\n    at Immediate.Async.drainQueues [as _onImmediate] (/root/.cache/Cypress/3.8.0/Cypress/resources/app/packages/server/node_modules/bluebird/js/release/async.js:15:14)\n    at processImmediate (internal/timers.js:439:21)\n",
+                "diff": null
+              },
+              "uuid": "6d9c5d8f-03ba-4720-b80e-95bdf04a12f4",
+              "parentUUID": "3e306dcf-3a0e-48b7-a4fb-fe0be1ff582d",
+              "isHook": false,
+              "skipped": false
+            }
+          ],
+          "suites": [],
+          "passes": [],
+          "failures": [
+            "6d9c5d8f-03ba-4720-b80e-95bdf04a12f4"
+          ],
+          "pending": [],
+          "skipped": [],
+          "duration": 2189,
+          "root": false,
+          "rootEmpty": false,
+          "_timeout": 2000
+        }
+      ],
+      "passes": [],
+      "failures": [],
+      "pending": [],
+      "skipped": [],
+      "duration": 0,
+      "root": true,
+      "rootEmpty": true,
+      "_timeout": 2000
+    }
+  ],
+  "meta": {
+    "mocha": {
+      "version": "6.2.2"
+    },
+    "mochawesome": {
+      "options": {
+        "quiet": false,
+        "reportFilename": "mochawesome",
+        "saveHtml": false,
+        "saveJson": true,
+        "consoleReporter": "spec",
+        "useInlineDiffs": false
+      },
+      "version": "4.1.0"
+    },
+    "marge": {
+      "options": {
+        "id": "default",
+        "reportDir": "cypress/reports/mochawesome",
+        "overwrite": false,
+        "html": false,
+        "json": true
+      },
+      "version": "4.1.0"
+    }
+  }
+}
