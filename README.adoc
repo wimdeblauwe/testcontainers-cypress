@@ -1,5 +1,7 @@
 = Cypress Testcontainer
 
+image:https://travis-ci.org/wimdeblauwe/testcontainers-cypress.svg?branch=master["Build Status", link="https://travis-ci.org/wimdeblauwe/testcontainers-cypress"]
+
 == Goal
 
 The goal of this project is to make it easy to start https://www.cypress.io/[Cypress] tests via https://www.testcontainers.org/[Testcontainers].
