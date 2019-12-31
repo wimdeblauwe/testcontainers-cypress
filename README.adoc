@@ -2,6 +2,7 @@
 
 image:https://travis-ci.org/wimdeblauwe/testcontainers-cypress.svg?branch=master["Build Status", link="https://travis-ci.org/wimdeblauwe/testcontainers-cypress"]
 image:https://sonarcloud.io/api/project_badges/measure?project=io.github.wimdeblauwe%3Atestcontainers-cypress&metric=coverage["Coverage", link="https://sonarcloud.io/dashboard?id=io.github.wimdeblauwe%3Atestcontainers-cypress"]
+image:https://maven-badges.herokuapp.com/maven-central/io.github.wimdeblauwe/testcontainers-cypress/badge.svg["Maven Central", link="https://search.maven.org/search?q=a:testcontainers-cypress"]
 
 == Goal
 
