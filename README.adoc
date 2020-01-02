@@ -47,7 +47,15 @@ use that to parse the results of the Cypress tests.
 
 [TIP]
 ====
-Add `node_modules` to your `.gitignore` to avoid accidental commit of the directory.
+Add the following to your `.gitignore` to avoid accidental commits:
+
+[source]
+----
+node_modules
+src/test/e2e/cypress/reports
+src/test/e2e/cypress/videos
+src/test/e2e/cypress/screenshots
+----
 ====
 
 
@@ -60,11 +68,31 @@ Use this dependency if you use Maven:
 [source,xml]
 ----
 <dependency>
-  <groupId>io.github.wimdeblauwe</groupId>
-  <artifactId>testcontainers-cypress</artifactId>
-  <version>${tc-cypress.version}</version>
-  <scope>test</scope>
+    <groupId>io.github.wimdeblauwe</groupId>
+    <artifactId>testcontainers-cypress</artifactId>
+    <version>${tc-cypress.version}</version>
+    <scope>test</scope>
 </dependency>
+----
+
+Add `src/test/e2e` as a test resource directory:
+
+[source,xml]
+----
+<project>
+    <build>
+        ...
+        <testResources>
+            <testResource>
+                <directory>src/test/resources</directory>
+            </testResource>
+            <testResource>
+                <directory>src/test/e2e</directory>
+                <targetPath>e2e</targetPath>
+            </testResource>
+        </testResources>
+    </build>
+</project>
 ----
 
 ==== Gradle
@@ -75,6 +103,10 @@ For Gradle, use the following dependency:
 ----
 testImplementation 'io.github.wimdeblauwe:testcontainers-cypress:${tc-cypress.version}'
 ----
+
+Add `src/test/e2e` as a test resource directory:
+
+_TODO add instructions on how to do this in Gradle (PR welcome)._
 
 === Usage with a @SpringBootTest
 
@@ -124,6 +156,48 @@ public class CypressEndToEndTests {
 <.> Create the `CypressContainer` and pass in the `port` so the base URL that Cypress will use is correct.
 <.> Wait on the tests and get the results.
 <.> Check if there have been failures in Cypress. If so, fail the test.
+
+== Configuration options
+
+The `CypressContainer` instance can be customized with the following options:
+
+[cols="m,a,m"]
+|===
+|Method |Description |Default
+
+|CypressContainer(String dockerImageName)
+|Allows to specify the docker image to use
+|cypress/included:3.8.1
+
+|withLocalServerPort(int port)
+|Set the port where the server is running on. It will use http://host.testcontainers.internal as hostname with the given port as the Cypress base URL. For a `@SpringBootTest`, pass the injected `@LocalServerPort` here.
+|8080
+
+|withBaseUrl(String baseUrl)
+|Set the full server url that will be used as base URL for Cypress.
+|http://host.testcontainers.internal:8080
+
+|withClasspathResourcePath(String resourcePath)
+|Set the relative path of where the cypress tests are (the path is the location of where the `cypress.json` file is)
+|e2e
+
+|withMaximumTotalTestDuration(Duration duration)
+|Set the maximum timeout for running the Cypress tests.
+|Duration.ofMinutes(10)
+
+|withGatherTestResultsStrategy(GatherTestResultsStrategy strategy)
+|Set the `GatherTestResultsStrategy` object that should be used for gathering information on the Cypress tests results.
+|MochawesomeGatherTestResultsStrategy
+
+|withMochawesomeReportsAt(Path path)
+|Set the path (relative to the root of the project) where the Mochawesome reports are put.
+|FileSystems.getDefault().getPath("target", "test-classes", "e2e", "cypress", "reports", "mochawesome")
+
+|withAutoCleanReports(boolean autoCleanReports)
+|Set if the Cypress test reports should be automatically cleaned before each run or not.
+|true
+|===
+
 
 == Development
 

@@ -106,6 +106,9 @@ public class CypressContainer extends GenericContainer<CypressContainer> {
      *       &#60;build&#62;
      *           &#60;testResources&#62;
      *             &#60;testResource&#62;
+     *                 &#60;directory&#62;src/test/resources&#60;/directory&#62;
+     *             &#60;/testResource&#62;
+     *             &#60;testResource&#62;
      *                 &#60;directory&#62;src/test/e2e&#60;/directory&#62;
      *                 &#60;targetPath&#62;e2e&#60;/targetPath&#62;
      *             &#60;/testResource&#62;
