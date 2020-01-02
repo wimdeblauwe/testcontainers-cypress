@@ -50,6 +50,7 @@ public class CypressContainer extends GenericContainer<CypressContainer> {
     protected void configure() {
         addEnv("CYPRESS_baseUrl", baseUrl);
         withClasspathResourceMapping(classpathResourcePath, "/e2e", BindMode.READ_WRITE);
+        withCreateContainerCmdModifier(cmd -> cmd.withEntrypoint("bash", "-c", "npm install && cypress run"));
     }
 
     @Override

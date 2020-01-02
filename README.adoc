@@ -45,6 +45,10 @@ use that to parse the results of the Cypress tests.
 }
 ----
 
+[TIP]
+====
+Add `node_modules` to your `.gitignore` to avoid accidental commit of the directory.
+====
 
 
 === Add dependency
