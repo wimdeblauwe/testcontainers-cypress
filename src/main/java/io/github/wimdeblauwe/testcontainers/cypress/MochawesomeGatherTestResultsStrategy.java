@@ -43,19 +43,23 @@ public class MochawesomeGatherTestResultsStrategy implements GatherTestResultsSt
 
     @Override
     public void cleanReports() throws IOException {
-        Files.walkFileTree(xmlReportsPath, new SimpleFileVisitor<Path>() {
-            @Override
-            public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
-                Files.delete(file);
-                return FileVisitResult.CONTINUE;
-            }
+        if (Files.exists(xmlReportsPath)) {
+            Files.walkFileTree(xmlReportsPath, new SimpleFileVisitor<Path>() {
+                @Override
+                public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
+                    Files.delete(file);
+                    return FileVisitResult.CONTINUE;
+                }
 
-            @Override
-            public FileVisitResult postVisitDirectory(Path dir, IOException exc) throws IOException {
-                Files.delete(dir);
-                return FileVisitResult.CONTINUE;
-            }
-        });
+                @Override
+                public FileVisitResult postVisitDirectory(Path dir, IOException exc) throws IOException {
+                    Files.delete(dir);
+                    return FileVisitResult.CONTINUE;
+                }
+            });
+        } else {
+            LOGGER.debug("Path {} does not exist, not cleaning", xmlReportsPath);
+        }
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
