@@ -13,25 +13,25 @@ public class MochawesomeGatherTestResultsStrategy implements GatherTestResultsSt
     private static final Logger LOGGER = LoggerFactory.getLogger(MochawesomeGatherTestResultsStrategy.class);
 
     private final ObjectMapper objectMapper = new ObjectMapper();
-    private final Path xmlReportsPath;
+    private final Path jsonReportsPath;
 
     public MochawesomeGatherTestResultsStrategy() {
-        xmlReportsPath = FileSystems.getDefault().getPath("target", "test-classes", "e2e", "cypress", "reports", "mochawesome");
+        jsonReportsPath = FileSystems.getDefault().getPath("target", "test-classes", "e2e", "cypress", "reports", "mochawesome");
     }
 
-    public MochawesomeGatherTestResultsStrategy(Path xmlReportsPath) {
-        this.xmlReportsPath = xmlReportsPath;
+    public MochawesomeGatherTestResultsStrategy(Path jsonReportsPath) {
+        this.jsonReportsPath = jsonReportsPath;
     }
 
     @Override
     public CypressTestResults gatherTestResults() throws IOException {
         if (LOGGER.isDebugEnabled()) {
-            LOGGER.debug("Reading Mochawesome report files from {}", xmlReportsPath.toAbsolutePath());
+            LOGGER.debug("Reading Mochawesome report files from {}", jsonReportsPath.toAbsolutePath());
         }
 
         CypressTestResults results = new CypressTestResults();
 
-        try (DirectoryStream<Path> paths = Files.newDirectoryStream(xmlReportsPath)) {
+        try (DirectoryStream<Path> paths = Files.newDirectoryStream(jsonReportsPath, "*.json")) {
             for (Path path : paths) {
                 MochawesomeSpecRunReport specRunReport = objectMapper.readValue(path.toFile(), MochawesomeSpecRunReport.class);
                 specRunReport.updateTotals(results);
@@ -43,8 +43,8 @@ public class MochawesomeGatherTestResultsStrategy implements GatherTestResultsSt
 
     @Override
     public void cleanReports() throws IOException {
-        if (Files.exists(xmlReportsPath)) {
-            Files.walkFileTree(xmlReportsPath, new SimpleFileVisitor<Path>() {
+        if (Files.exists(jsonReportsPath)) {
+            Files.walkFileTree(jsonReportsPath, new SimpleFileVisitor<Path>() {
                 @Override
                 public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
                     Files.delete(file);
@@ -58,7 +58,7 @@ public class MochawesomeGatherTestResultsStrategy implements GatherTestResultsSt
                 }
             });
         } else {
-            LOGGER.debug("Path {} does not exist, not cleaning", xmlReportsPath);
+            LOGGER.debug("Path {} does not exist, not cleaning", jsonReportsPath);
         }
     }
 
