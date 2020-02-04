@@ -1,9 +1,13 @@
 package io.github.wimdeblauwe.testcontainers.cypress;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class CypressTestResults {
-    int numberOfTests;
-    int numberOfPassingTests;
-    int numberOfFailingTests;
+    private int numberOfTests;
+    private int numberOfPassingTests;
+    private int numberOfFailingTests;
+    private List<CypressTestSuite> suites = new ArrayList<>();
 
     public int getNumberOfTests() {
         return numberOfTests;
@@ -39,6 +43,14 @@ public class CypressTestResults {
 
     void addNumberOfFailingTests(int failures) {
         numberOfFailingTests += failures;
+    }
+
+    public List<CypressTestSuite> getSuites() {
+        return suites;
+    }
+
+    void addSuites(List<CypressTestSuite> suites) {
+        this.suites.addAll(suites);
     }
 
     @Override

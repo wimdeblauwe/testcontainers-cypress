@@ -8,6 +8,8 @@ import org.slf4j.LoggerFactory;
 import java.io.IOException;
 import java.nio.file.*;
 import java.nio.file.attribute.BasicFileAttributes;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MochawesomeGatherTestResultsStrategy implements GatherTestResultsStrategy {
     private static final Logger LOGGER = LoggerFactory.getLogger(MochawesomeGatherTestResultsStrategy.class);
@@ -34,7 +36,7 @@ public class MochawesomeGatherTestResultsStrategy implements GatherTestResultsSt
         try (DirectoryStream<Path> paths = Files.newDirectoryStream(jsonReportsPath, "*.json")) {
             for (Path path : paths) {
                 MochawesomeSpecRunReport specRunReport = objectMapper.readValue(path.toFile(), MochawesomeSpecRunReport.class);
-                specRunReport.updateTotals(results);
+                specRunReport.fillInTestResults(results);
             }
 
             return results;
@@ -65,6 +67,7 @@ public class MochawesomeGatherTestResultsStrategy implements GatherTestResultsSt
     @JsonIgnoreProperties(ignoreUnknown = true)
     private static class MochawesomeSpecRunReport {
         private Stats stats;
+        private List<Result> results;
 
         public Stats getStats() {
             return stats;
@@ -74,10 +77,35 @@ public class MochawesomeGatherTestResultsStrategy implements GatherTestResultsSt
             this.stats = stats;
         }
 
-        public void updateTotals(CypressTestResults results) {
+        public List<Result> getResults() {
+            return results;
+        }
+
+        public void setResults(List<Result> results) {
+            this.results = results;
+        }
+
+        public void fillInTestResults(CypressTestResults results) {
             results.addNumberOfTests(stats.getTests());
             results.addNumberOfPassingTests(stats.getPasses());
             results.addNumberOfFailingTests(stats.getFailures());
+
+            for (Result result : getResults()) {
+                List<Suite> suites = result.getSuites();
+
+                List<CypressTestSuite> cypressTestSuites = new ArrayList<>();
+                for (Suite suite : suites) {
+                    CypressTestSuite cypressTestSuite = new CypressTestSuite(suite.getTitle());
+                    List<SuiteTest> tests = suite.getTests();
+                    for (SuiteTest test : tests) {
+                        cypressTestSuite.add(new CypressTest(test.getTitle(), !test.isFail()));
+                    }
+
+                    cypressTestSuites.add(cypressTestSuite);
+                }
+
+                results.addSuites(cypressTestSuites);
+            }
         }
 
         @JsonIgnoreProperties(ignoreUnknown = true)
@@ -108,6 +136,63 @@ public class MochawesomeGatherTestResultsStrategy implements GatherTestResultsSt
 
             public void setFailures(int failures) {
                 this.failures = failures;
+            }
+        }
+
+        @JsonIgnoreProperties(ignoreUnknown = true)
+        private static class Result {
+            private List<Suite> suites;
+
+            public List<Suite> getSuites() {
+                return suites;
+            }
+
+            public void setSuites(List<Suite> suites) {
+                this.suites = suites;
+            }
+        }
+
+        @JsonIgnoreProperties(ignoreUnknown = true)
+        private static class Suite {
+            private String title;
+            private List<SuiteTest> tests;
+
+            public String getTitle() {
+                return title;
+            }
+
+            public void setTitle(String title) {
+                this.title = title;
+            }
+
+            public List<SuiteTest> getTests() {
+                return tests;
+            }
+
+            public void setTests(List<SuiteTest> tests) {
+                this.tests = tests;
+            }
+        }
+
+        @JsonIgnoreProperties(ignoreUnknown = true)
+        private static class SuiteTest {
+            private String title;
+            private boolean fail;
+
+            public String getTitle() {
+                return title;
+            }
+
+            public void setTitle(String title) {
+                this.title = title;
+            }
+
+            public boolean isFail() {
+                return fail;
+            }
+
+            public void setFail(boolean fail) {
+                this.fail = fail;
             }
         }
     }
