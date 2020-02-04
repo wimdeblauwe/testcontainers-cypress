@@ -157,6 +157,86 @@ public class CypressEndToEndTests {
 <.> Wait on the tests and get the results.
 <.> Check if there have been failures in Cypress. If so, fail the test.
 
+=== JUnit 5 dynamic tests
+
+If you are using JUnit 5, then you can use a `@TestFactory` annotated method so that it looks like there is a JUnit test
+for each of the Cypress tests.
+
+[source,java]
+----
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
+public class CypressEndToEndTests {
+
+    @LocalServerPort
+    private int port;
+
+     @TestFactory // <.>
+    void runCypressTests() throws InterruptedException, IOException, TimeoutException {
+
+        Testcontainers.exposeHostPorts(port);
+
+        try (CypressContainer container = new CypressContainer().withLocalServerPort(port)) {
+            container.start();
+            CypressTestResults testResults = container.getTestResults();
+
+             return convertToJUnitDynamicTests(testResults); // <.>
+        }
+    }
+
+    @NotNull
+    private List<DynamicContainer> convertToJUnitDynamicTests(CypressTestResults testResults) {
+        List<DynamicContainer> dynamicContainers = new ArrayList<>();
+        List<CypressTestSuite> suites = testResults.getSuites();
+        for (CypressTestSuite suite : suites) {
+            createContainerFromSuite(dynamicContainers, suite);
+        }
+        return dynamicContainers;
+    }
+
+    private void createContainerFromSuite(List<DynamicContainer> dynamicContainers, CypressTestSuite suite) {
+        List<DynamicTest> dynamicTests = new ArrayList<>();
+        for (CypressTest test : suite.getTests()) {
+            dynamicTests.add(DynamicTest.dynamicTest(test.getDescription(), () -> assertTrue(test.isSuccess())));
+        }
+        dynamicContainers.add(DynamicContainer.dynamicContainer(suite.getTitle(), dynamicTests));
+    }
+}
+----
+<.> Use the `@TestFactory` annotated as opposed to the `@Test` method
+<.> Use the `CypressTestResults` to generate `DynamicTest` and `DynamicContainer` instances
+
+If the Cypress tests look like this:
+
+[source,javascript]
+----
+context('Todo tests', () => {
+   it('should show a message if there are no todo items', () => {
+       cy.request('POST', '/api/integration-test/clear-all-todos');
+       cy.visit('/todos');
+       cy.get('h1').contains('TODO list');
+       cy.get('#empty-todos-message').contains('There are no todo items');
+   });
+
+   it('should show all todo items', () => {
+       cy.request('POST', '/api/integration-test/prepare-todo-list-items');
+       cy.visit('/todos');
+       cy.get('h1').contains('TODO list');
+       cy.get('#todo-items-list')
+           .children()
+           .should('have.length', 2)
+           .should('contain', 'Add Cypress tests')
+           .and('contain', 'Write blog post');
+   })
+});
+----
+
+Then running the JUnit test will show this in the IDE:
+
+image::Cypress tests in JUnit with IntelliJ.png[]
+
+This makes it a lot easier to see which Cypress test has failed.
+
 == Configuration options
 
 The `CypressContainer` instance can be customized with the following options:
