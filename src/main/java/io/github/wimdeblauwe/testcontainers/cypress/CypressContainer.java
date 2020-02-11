@@ -1,6 +1,7 @@
 package io.github.wimdeblauwe.testcontainers.cypress;
 
 import org.apache.commons.lang3.StringUtils;
+import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testcontainers.containers.BindMode;
@@ -19,7 +20,7 @@ public class CypressContainer extends GenericContainer<CypressContainer> {
     private static final Logger LOGGER = LoggerFactory.getLogger(CypressContainer.class);
 
     private static final String CYPRESS_IMAGE = "cypress/included";
-    private static final String CYPRESS_VERSION = "3.8.3";
+    private static final String CYPRESS_VERSION = "4.0.1";
 
     private static final int DEFAULT_PORT = 8080;
     private static final String DEFAULT_BASE_URL = "http://host.testcontainers.internal";
@@ -32,6 +33,7 @@ public class CypressContainer extends GenericContainer<CypressContainer> {
     private final CountDownLatch countDownLatch = new CountDownLatch(1);
 
     private String baseUrl = DEFAULT_URL;
+    private String browser;
     private String classpathResourcePath = DEFAULT_CLASSPATH_RESOURCE_PATH;
     private Duration maximumTotalTestDuration = DEFAULT_MAX_TOTAL_TEST_DURATION;
     private GatherTestResultsStrategy gatherTestResultsStrategy = DEFAULT_GATHER_TEST_RESULTS_STRATEGY;
@@ -50,7 +52,8 @@ public class CypressContainer extends GenericContainer<CypressContainer> {
     protected void configure() {
         addEnv("CYPRESS_baseUrl", baseUrl);
         withClasspathResourceMapping(classpathResourcePath, "/e2e", BindMode.READ_WRITE);
-        withCreateContainerCmdModifier(cmd -> cmd.withEntrypoint("bash", "-c", "npm install && cypress run"));
+        withCreateContainerCmdModifier(cmd -> cmd.withEntrypoint("bash", "-c", "npm install && cypress run " +
+                buildCypressRunArguments()));
     }
 
     @Override
@@ -90,6 +93,20 @@ public class CypressContainer extends GenericContainer<CypressContainer> {
             throw new IllegalArgumentException("baseUrl should not be blank");
         }
         this.baseUrl = baseUrl;
+        return self();
+    }
+
+    /**
+     * Sets the browser to use when running the tests.
+     *
+     * @param browser the name of the browser (e.g. chrome, firefox, electron, ...)
+     * @return the current instance
+     */
+    public CypressContainer withBrowser(String browser) {
+        if (browser == null || browser.trim().length() == 0) {
+            throw new IllegalArgumentException("browser should not be blank");
+        }
+        this.browser = browser;
         return self();
     }
 
@@ -206,6 +223,17 @@ public class CypressContainer extends GenericContainer<CypressContainer> {
             LOGGER.warn("Cypress tests did not finish within {} duration", maximumTotalTestDuration);
             throw new TimeoutException(String.format("Cypress tests did not finish within %s duration", maximumTotalTestDuration));
         }
+    }
+
+    @NotNull
+    private String buildCypressRunArguments() {
+        StringBuilder builder = new StringBuilder();
+        builder.append("--headless ");
+        if (browser != null) {
+            builder.append("--browser ")
+                   .append(browser);
+        }
+        return builder.toString();
     }
 
     private void cleanReportsIfNeeded() {
