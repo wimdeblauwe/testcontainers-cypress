@@ -250,7 +250,7 @@ The `CypressContainer` instance can be customized with the following options:
 
 |CypressContainer(String dockerImageName)
 |Allows to specify the docker image to use
-|cypress/included:3.8.3
+|cypress/included:4.0.1
 
 |withLocalServerPort(int port)
 |Set the port where the server is running on. It will use http://host.testcontainers.internal as hostname with the given port as the Cypress base URL. For a `@SpringBootTest`, pass the injected `@LocalServerPort` here.
@@ -259,6 +259,10 @@ The `CypressContainer` instance can be customized with the following options:
 |withBaseUrl(String baseUrl)
 |Set the full server url that will be used as base URL for Cypress.
 |http://host.testcontainers.internal:8080
+
+|withBrowser(String browser)
+|Set the browser to use when running the tests (E.g. `electron`, `chrome`, `firefox`)
+|electron
 
 |withClasspathResourcePath(String resourcePath)
 |Set the relative path of where the cypress tests are (the path is the location of where the `cypress.json` file is)
