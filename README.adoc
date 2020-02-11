@@ -264,6 +264,11 @@ The `CypressContainer` instance can be customized with the following options:
 |Set the browser to use when running the tests (E.g. `electron`, `chrome`, `firefox`)
 |electron
 
+|withSpec(String spec)
+|Sets the test(s) to run. This can be a single test (e.g. `cypress/integration/todos.spec.js`)
+or multiple (e.g. `cypress/integration/login/**`)
+| By default (meaning not calling this method), all tests are run.
+
 |withClasspathResourcePath(String resourcePath)
 |Set the relative path of where the cypress tests are (the path is the location of where the `cypress.json` file is)
 |e2e

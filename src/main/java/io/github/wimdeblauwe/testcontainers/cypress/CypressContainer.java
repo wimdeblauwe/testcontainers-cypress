@@ -34,6 +34,7 @@ public class CypressContainer extends GenericContainer<CypressContainer> {
 
     private String baseUrl = DEFAULT_URL;
     private String browser;
+    private String spec;
     private String classpathResourcePath = DEFAULT_CLASSPATH_RESOURCE_PATH;
     private Duration maximumTotalTestDuration = DEFAULT_MAX_TOTAL_TEST_DURATION;
     private GatherTestResultsStrategy gatherTestResultsStrategy = DEFAULT_GATHER_TEST_RESULTS_STRATEGY;
@@ -107,6 +108,26 @@ public class CypressContainer extends GenericContainer<CypressContainer> {
             throw new IllegalArgumentException("browser should not be blank");
         }
         this.browser = browser;
+        return self();
+    }
+
+    /**
+     * Sets the test(s) to run.
+     * <p>
+     * This can be a single test: <code>cypress/integration/todos.spec.js</code>
+     * or multiple: <code>cypress/integration/login/**</code>
+     * <p>
+     * By default (meaning not calling this method), all tests are run.
+     *
+     * @param spec the test specification
+     * @return the current instance
+     */
+    public CypressContainer withSpec(String spec) {
+        if (spec == null || spec.trim().length() == 0) {
+            throw new IllegalArgumentException("spec should not be blank");
+        }
+
+        this.spec = spec;
         return self();
     }
 
@@ -228,10 +249,15 @@ public class CypressContainer extends GenericContainer<CypressContainer> {
     @NotNull
     private String buildCypressRunArguments() {
         StringBuilder builder = new StringBuilder();
-        builder.append("--headless ");
+        builder.append("--headless");
         if (browser != null) {
-            builder.append("--browser ")
+            builder.append(" --browser ")
                    .append(browser);
+        }
+        if (spec != null) {
+            builder.append(" --spec \"")
+                   .append(spec)
+                   .append('\"');
         }
         return builder.toString();
     }
