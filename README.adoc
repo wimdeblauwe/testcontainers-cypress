@@ -312,6 +312,12 @@ or multiple (e.g. `cypress/integration/login/**`)
 |https://docs.cypress.io/guides/references/changelog.html#3-8-0[3.8.0]
 |===
 
+== Links
+
+Links to blog or articles that cover testcontainers-cypress:
+
+https://www.wimdeblauwe.com/blog/2020-02-01-example-usage-of-testcontainers-cypress/[Example usage of testcontainers cypress] :: Good introduction on how to get started.
+https://www.wimdeblauwe.com/blog/2020-02-11-testcontainers-cypress-release-0.4.0/[Testcontainers-cypress release 0.4.0] :: Shows how to run tests on multiple browsers with JUnit
 
 == Development
 
