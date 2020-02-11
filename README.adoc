@@ -312,7 +312,7 @@ or multiple (e.g. `cypress/integration/login/**`)
 == Development
 
 * Builds are done on Travis: https://travis-ci.org/wimdeblauwe/testcontainers-cypress
-* Code quality is available via SonarQube: https://sonarcloud.io/dashboard?id=org.wimdeblauwe%3Atestcontainers-cypress
+* Code quality is available via SonarQube: https://sonarcloud.io/dashboard?id=io.github.wimdeblauwe%3Atestcontainers-cypress
 
 == Deployment
 
