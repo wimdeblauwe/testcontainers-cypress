@@ -1,5 +1,6 @@
 package io.github.wimdeblauwe.testcontainers.cypress;
 
+import com.github.dockerjava.api.model.Bind;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
@@ -11,6 +12,7 @@ import org.testcontainers.containers.output.OutputFrame;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.time.Duration;
+import java.util.List;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
@@ -53,14 +55,11 @@ public class CypressContainer extends GenericContainer<CypressContainer> {
     protected void configure() {
         addEnv("CYPRESS_baseUrl", baseUrl);
         withClasspathResourceMapping(classpathResourcePath, "/e2e", BindMode.READ_WRITE);
-        withCreateContainerCmdModifier(cmd -> cmd.withEntrypoint("bash", "-c", "npm install && cypress run " +
-                buildCypressRunArguments()));
+        withCreateContainerCmdModifier(cmd -> cmd.withEntrypoint("bash", "-c", buildEntryPoint()));
     }
 
     @Override
     public void start() {
-        cleanReportsIfNeeded();
-
         super.start();
 
         CypressContainerOutputFollower follower = new CypressContainerOutputFollower(countDownLatch);
@@ -262,14 +261,41 @@ public class CypressContainer extends GenericContainer<CypressContainer> {
         return builder.toString();
     }
 
-    private void cleanReportsIfNeeded() {
+    @NotNull
+    private String buildEntryPoint() {
+        StringBuilder builder = new StringBuilder();
         if (autoCleanReports) {
-            try {
-                gatherTestResultsStrategy.cleanReports();
-            } catch (IOException e) {
-                throw new RuntimeException(e);
+            String reportsPathInContainer = getReportsPathInContainer();
+            if( reportsPathInContainer.equals("/")) {
+                throw new IllegalArgumentException("Reports path was /, not allowing to delete everything");
+            }
+            LOGGER.debug("Removing reports from {}", reportsPathInContainer);
+            builder.append("rm -rf ")
+                   .append(reportsPathInContainer)
+                   .append(" && ");
+        }
+        builder.append("npm install && ");
+        builder.append("cypress run ")
+               .append(buildCypressRunArguments());
+        return builder.toString();
+    }
+
+    @NotNull
+    private String getReportsPathInContainer() {
+        String pathOnHost = gatherTestResultsStrategy.getReportsPath().toAbsolutePath().toString();
+        String pathInContainer = null;
+        List<Bind> binds = getBinds();
+        for (Bind bind : binds) {
+            String path = bind.getPath();
+            if(pathOnHost.startsWith(path)) {
+                pathInContainer = pathOnHost.substring(path.length());
             }
         }
+
+        if( pathInContainer == null ) {
+            throw new IllegalArgumentException("Could not find matching container path in the binds: " + binds);
+        }
+        return pathInContainer;
     }
 
     private static class CypressContainerOutputFollower implements Consumer<OutputFrame> {

@@ -77,7 +77,8 @@ class CypressContainerTest {
     @Test
     void testWithBrowser() {
         CypressContainer container = new CypressContainer()
-                .withBrowser("firefox");
+                .withBrowser("firefox")
+                .withAutoCleanReports(false);
         container.configure();
         Set<Consumer<CreateContainerCmd>> createContainerCmdModifiers = container.getCreateContainerCmdModifiers();
         assertThat(createContainerCmdModifiers).hasSize(1);
@@ -100,11 +101,28 @@ class CypressContainerTest {
                 .isThrownBy(() -> new CypressContainer()
                         .withBrowser(""));
     }
-    
+
+    @Test
+    void testWithAutoCleanReports() {
+        CypressContainer container = new CypressContainer()
+                .withAutoCleanReports(true);
+        container.configure();
+        Set<Consumer<CreateContainerCmd>> createContainerCmdModifiers = container.getCreateContainerCmdModifiers();
+        assertThat(createContainerCmdModifiers).hasSize(1);
+        Consumer<CreateContainerCmd> consumer = createContainerCmdModifiers.iterator().next();
+        CreateContainerCmd cmd = mock(CreateContainerCmd.class);
+        consumer.accept(cmd);
+        verify(cmd).withEntrypoint("bash",
+                                   "-c",
+                                   "rm -rf cypress/reports/mochawesome && npm install && cypress run --headless");
+    }
+
     @Test
     void testWithSpec() {
         CypressContainer container = new CypressContainer()
-                .withSpec("cypress/integration/todos.spec.js");
+                .withSpec("cypress/integration/todos.spec.js")
+                .withAutoCleanReports(false);
+
         container.configure();
         Set<Consumer<CreateContainerCmd>> createContainerCmdModifiers = container.getCreateContainerCmdModifiers();
         assertThat(createContainerCmdModifiers).hasSize(1);

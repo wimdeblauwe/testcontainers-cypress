@@ -6,8 +6,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
-import java.nio.file.*;
-import java.nio.file.attribute.BasicFileAttributes;
+import java.nio.file.DirectoryStream;
+import java.nio.file.FileSystems;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -44,24 +46,8 @@ public class MochawesomeGatherTestResultsStrategy implements GatherTestResultsSt
     }
 
     @Override
-    public void cleanReports() throws IOException {
-        if (Files.exists(jsonReportsPath)) {
-            Files.walkFileTree(jsonReportsPath, new SimpleFileVisitor<Path>() {
-                @Override
-                public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
-                    Files.delete(file);
-                    return FileVisitResult.CONTINUE;
-                }
-
-                @Override
-                public FileVisitResult postVisitDirectory(Path dir, IOException exc) throws IOException {
-                    Files.delete(dir);
-                    return FileVisitResult.CONTINUE;
-                }
-            });
-        } else {
-            LOGGER.debug("Path {} does not exist, not cleaning", jsonReportsPath);
-        }
+    public Path getReportsPath() {
+        return jsonReportsPath;
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
