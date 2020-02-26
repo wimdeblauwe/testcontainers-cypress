@@ -2,12 +2,10 @@ package io.github.wimdeblauwe.testcontainers.cypress;
 
 
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.io.TempDir;
 
 import java.io.IOException;
 import java.net.URI;
 import java.net.URL;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 import java.util.Optional;
@@ -39,11 +37,5 @@ class MochawesomeGatherTestResultsStrategyTest {
                                      CypressTest::isSuccess)
                          .contains(tuple("should show error message if no code in url", true),
                                    tuple("should show error message if code is unknown", true));
-    }
-
-    @Test
-    void testCleanReportsIfDirectoryDoesNotExist(@TempDir Path path) throws IOException {
-        MochawesomeGatherTestResultsStrategy strategy = new MochawesomeGatherTestResultsStrategy(path.resolve("non-existing"));
-        strategy.cleanReports();
     }
 }
