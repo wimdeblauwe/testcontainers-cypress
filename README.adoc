@@ -295,6 +295,10 @@ or multiple (e.g. `cypress/integration/login/**`)
 |===
 |Testcontainers-cypress |Testcontainers | Cypress
 
+|https://github.com/wimdeblauwe/testcontainers-cypress/releases/tag/testcontainers-cypress-0.5.0[0.5.0]
+|https://github.com/testcontainers/testcontainers-java/releases/tag/1.12.5[1.12.5]
+|https://docs.cypress.io/guides/references/changelog.html#4-0-2[4.0.2]
+
 |https://github.com/wimdeblauwe/testcontainers-cypress/releases/tag/testcontainers-cypress-0.4.0[0.4.0]
 |https://github.com/testcontainers/testcontainers-java/releases/tag/1.12.5[1.12.5]
 |https://docs.cypress.io/guides/references/changelog.html#4-0-1[4.0.1]
