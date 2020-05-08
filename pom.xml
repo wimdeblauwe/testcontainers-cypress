@@ -13,7 +13,7 @@
         <java.version>1.8</java.version>
 
         <!-- Dependencies -->
-        <testcontainers.version>1.13.0</testcontainers.version>
+        <testcontainers.version>1.14.1</testcontainers.version>
         <commons-lang3.version>3.9</commons-lang3.version>
         <slf4j-api.version>1.7.29</slf4j-api.version>
         <jackson.version>2.10.1</jackson.version>
