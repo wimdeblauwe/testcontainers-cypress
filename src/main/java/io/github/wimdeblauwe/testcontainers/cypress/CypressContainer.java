@@ -1,6 +1,7 @@
 package io.github.wimdeblauwe.testcontainers.cypress;
 
 import com.github.dockerjava.api.model.Bind;
+import io.github.wimdeblauwe.testcontainers.cypress.util.FilenameUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
@@ -266,7 +267,7 @@ public class CypressContainer extends GenericContainer<CypressContainer> {
         StringBuilder builder = new StringBuilder();
         if (autoCleanReports) {
             String reportsPathInContainer = getReportsPathInContainer();
-            if( reportsPathInContainer.equals("/")) {
+            if (reportsPathInContainer.equals("/")) {
                 throw new IllegalArgumentException("Reports path was /, not allowing to delete everything");
             }
             LOGGER.debug("Removing reports from {}", reportsPathInContainer);
@@ -286,13 +287,13 @@ public class CypressContainer extends GenericContainer<CypressContainer> {
         String pathInContainer = null;
         List<Bind> binds = getBinds();
         for (Bind bind : binds) {
-            String path = bind.getPath();
-            if(pathOnHost.startsWith(path)) {
+            String path = FilenameUtils.separatorsToSystem(bind.getPath());
+            if (pathOnHost.startsWith(path)) {
                 pathInContainer = pathOnHost.substring(path.length());
             }
         }
 
-        if( pathInContainer == null ) {
+        if (pathInContainer == null) {
             throw new IllegalArgumentException("Could not find matching container path in the binds: " + binds);
         }
         return pathInContainer;
