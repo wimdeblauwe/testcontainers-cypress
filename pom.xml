@@ -4,7 +4,7 @@
 
     <groupId>io.github.wimdeblauwe</groupId>
     <artifactId>testcontainers-cypress</artifactId>
-    <version>0.8.0-SNAPSHOT</version>
+    <version>1.0.0</version>
     <name>Testcontainers Cypress</name>
     <description>A Testcontainers implementation for running Cypress e2e tests</description>
     <url>https://github.com/wimdeblauwe/testcontainers-cypress</url>
@@ -51,7 +51,7 @@
         <developerConnection>scm:git:git@github.com:wimdeblauwe/testcontainers-cypress.git</developerConnection>
         <connection>scm:git:git@github.com:wimdeblauwe/testcontainers-cypress.git</connection>
         <url>git@github.com:wimdeblauwe/testcontainers-cypress.git</url>
-      <tag>HEAD</tag>
+      <tag>testcontainers-cypress-1.0.0</tag>
   </scm>
     <issueManagement>
         <system>github</system>
