@@ -3,13 +3,13 @@ package io.github.wimdeblauwe.testcontainers.cypress;
 import com.github.dockerjava.api.model.Bind;
 import io.github.wimdeblauwe.testcontainers.cypress.util.FilenameUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testcontainers.containers.BindMode;
 import org.testcontainers.containers.GenericContainer;
 import org.testcontainers.containers.output.OutputFrame;
 
+import javax.annotation.Nonnull;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.time.Duration;
@@ -246,7 +246,7 @@ public class CypressContainer extends GenericContainer<CypressContainer> {
         }
     }
 
-    @NotNull
+    @Nonnull
     private String buildCypressRunArguments() {
         StringBuilder builder = new StringBuilder();
         builder.append("--headless");
@@ -262,7 +262,7 @@ public class CypressContainer extends GenericContainer<CypressContainer> {
         return builder.toString();
     }
 
-    @NotNull
+    @Nonnull
     private String buildEntryPoint() {
         StringBuilder builder = new StringBuilder();
         if (autoCleanReports) {
@@ -281,7 +281,7 @@ public class CypressContainer extends GenericContainer<CypressContainer> {
         return builder.toString();
     }
 
-    @NotNull
+    @Nonnull
     private String getReportsPathInContainer() {
         String pathOnHost = gatherTestResultsStrategy.getReportsPath().toAbsolutePath().toString();
         String pathInContainer = null;
