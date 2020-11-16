@@ -269,6 +269,15 @@ The `CypressContainer` instance can be customized with the following options:
 or multiple (e.g. `cypress/integration/login/**`)
 | By default (meaning not calling this method), all tests are run.
 
+|withRecord()
+|Passes the `--record` flag on the command line to record the test results on the https://docs.cypress.io/guides/dashboard/introduction.html[Cypress Dashboard].
+The `CYPRESS_RECORD_KEY` environment variable needs to be set for this to work.
+| Not enabled by default
+
+|withRecord(String recordKey)
+|Passes the `--record` flag on the command line to record the test results on the https://docs.cypress.io/guides/dashboard/introduction.html[Cypress Dashboard] using the given record key.
+| Not enabled by default
+
 |withClasspathResourcePath(String resourcePath)
 |Set the relative path of where the cypress tests are (the path is the location of where the `cypress.json` file is)
 |e2e

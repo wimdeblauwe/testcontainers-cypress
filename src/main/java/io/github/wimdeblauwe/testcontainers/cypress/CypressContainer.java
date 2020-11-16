@@ -38,6 +38,8 @@ public class CypressContainer extends GenericContainer<CypressContainer> {
     private String baseUrl = DEFAULT_URL;
     private String browser;
     private String spec;
+    private boolean record; // https://docs.cypress.io/guides/guides/command-line.html#cypress-run-record-key-lt-record-key-gt
+    private String recordKey; // Optional key for recordings, can also use CYPRESS_RECORD_KEY environment variable instead
     private String classpathResourcePath = DEFAULT_CLASSPATH_RESOURCE_PATH;
     private Duration maximumTotalTestDuration = DEFAULT_MAX_TOTAL_TEST_DURATION;
     private GatherTestResultsStrategy gatherTestResultsStrategy = DEFAULT_GATHER_TEST_RESULTS_STRATEGY;
@@ -128,6 +130,18 @@ public class CypressContainer extends GenericContainer<CypressContainer> {
         }
 
         this.spec = spec;
+        return self();
+    }
+
+    public CypressContainer withRecord() {
+        this.record = true;
+        this.recordKey = null;
+        return self();
+    }
+
+    public CypressContainer withRecord(String recordKey) {
+        this.record = true;
+        this.recordKey = recordKey;
         return self();
     }
 
@@ -258,6 +272,13 @@ public class CypressContainer extends GenericContainer<CypressContainer> {
             builder.append(" --spec \"")
                    .append(spec)
                    .append('\"');
+        }
+        if (record) {
+            builder.append(" --record");
+            if (recordKey != null) {
+                builder.append(" --key ")
+                       .append(recordKey);
+            }
         }
         return builder.toString();
     }

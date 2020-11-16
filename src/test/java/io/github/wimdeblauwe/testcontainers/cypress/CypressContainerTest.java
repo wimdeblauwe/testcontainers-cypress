@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.List;
 import java.util.Set;
+import java.util.UUID;
 import java.util.function.Consumer;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -170,4 +171,36 @@ class CypressContainerTest {
                 .isThrownBy(() -> new CypressContainer()
                         .withClasspathResourcePath(""));
     }
+
+    @Test
+    void testWithRecord() {
+        CypressContainer container = new CypressContainer()
+                .withAutoCleanReports(false)
+                .withRecord();
+
+        container.configure();
+        Set<Consumer<CreateContainerCmd>> createContainerCmdModifiers = container.getCreateContainerCmdModifiers();
+        assertThat(createContainerCmdModifiers).hasSize(1);
+        Consumer<CreateContainerCmd> consumer = createContainerCmdModifiers.iterator().next();
+        CreateContainerCmd cmd = mock(CreateContainerCmd.class);
+        consumer.accept(cmd);
+        verify(cmd).withEntrypoint("bash", "-c", "npm install && cypress run --headless --record");
+    }
+
+    @Test
+    void testWithRecordKey() {
+        String recordKey = UUID.randomUUID().toString();
+        CypressContainer container = new CypressContainer()
+                .withAutoCleanReports(false)
+                .withRecord(recordKey);
+
+        container.configure();
+        Set<Consumer<CreateContainerCmd>> createContainerCmdModifiers = container.getCreateContainerCmdModifiers();
+        assertThat(createContainerCmdModifiers).hasSize(1);
+        Consumer<CreateContainerCmd> consumer = createContainerCmdModifiers.iterator().next();
+        CreateContainerCmd cmd = mock(CreateContainerCmd.class);
+        consumer.accept(cmd);
+        verify(cmd).withEntrypoint("bash", "-c", "npm install && cypress run --headless --record --key " + recordKey);
+    }
+
 }
