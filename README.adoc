@@ -175,7 +175,7 @@ public class CypressEndToEndTests {
     private int port;
 
      @TestFactory // <.>
-    void runCypressTests() throws InterruptedException, IOException, TimeoutException {
+    List<DynamicContainer> runCypressTests() throws InterruptedException, IOException, TimeoutException {
 
         Testcontainers.exposeHostPorts(port);
 
