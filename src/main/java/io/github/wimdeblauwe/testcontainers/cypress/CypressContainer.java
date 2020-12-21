@@ -12,6 +12,7 @@ import org.testcontainers.containers.output.OutputFrame;
 import javax.annotation.Nonnull;
 import java.io.IOException;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.Duration;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
@@ -304,13 +305,13 @@ public class CypressContainer extends GenericContainer<CypressContainer> {
 
     @Nonnull
     private String getReportsPathInContainer() {
-        String pathOnHost = gatherTestResultsStrategy.getReportsPath().toAbsolutePath().toString();
+        Path pathOnHost = gatherTestResultsStrategy.getReportsPath().toAbsolutePath();
         String pathInContainer = null;
         List<Bind> binds = getBinds();
         for (Bind bind : binds) {
             String path = FilenameUtils.separatorsToSystem(bind.getPath());
             if (pathOnHost.startsWith(path)) {
-                pathInContainer = pathOnHost.substring(path.length());
+                pathInContainer = Paths.get(path).relativize(pathOnHost).toString();
             }
         }
 

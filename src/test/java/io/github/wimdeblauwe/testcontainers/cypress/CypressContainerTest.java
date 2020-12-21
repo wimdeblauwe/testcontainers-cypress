@@ -1,10 +1,9 @@
 package io.github.wimdeblauwe.testcontainers.cypress;
 
 import com.github.dockerjava.api.command.CreateContainerCmd;
-import com.github.dockerjava.api.model.Bind;
 import org.junit.jupiter.api.Test;
 
-import java.util.List;
+import java.nio.file.Paths;
 import java.util.Set;
 import java.util.UUID;
 import java.util.function.Consumer;
@@ -150,12 +149,18 @@ class CypressContainerTest {
     @Test
     void testWithClasspathResourcePath() {
         CypressContainer container = new CypressContainer()
-                .withClasspathResourcePath("io/github/wimdeblauwe");
+                .withClasspathResourcePath("io")
+                .withAutoCleanReports(true)
+                .withMochawesomeReportsAt(Paths.get("target", "test-classes", "io", "github", "wimdeblauwe"));
         container.configure();
-        List<Bind> binds = container.getBinds();
-        assertThat(binds).hasSize(1);
-        Bind bind = binds.get(0);
-        assertThat(bind.getPath()).endsWith("/target/test-classes/io/github/wimdeblauwe/");
+        Set<Consumer<CreateContainerCmd>> createContainerCmdModifiers = container.getCreateContainerCmdModifiers();
+        assertThat(createContainerCmdModifiers).hasSize(1);
+        Consumer<CreateContainerCmd> consumer = createContainerCmdModifiers.iterator().next();
+        CreateContainerCmd cmd = mock(CreateContainerCmd.class);
+        consumer.accept(cmd);
+        verify(cmd).withEntrypoint("bash",
+                                   "-c",
+                                   "rm -rf github/wimdeblauwe && npm install && cypress run --headless");
     }
 
     @Test
