@@ -107,9 +107,33 @@ For Gradle, use the following dependency:
 testImplementation 'io.github.wimdeblauwe:testcontainers-cypress:${tc-cypress.version}'
 ----
 
-Add `src/test/e2e` as a test resource directory:
+Add `src/test/e2e` as a test resource directory. 
+As Gradle organizes files in the `build` directory differently you need to add one more task to copy the files into the directory expected the container.
 
-_TODO add instructions on how to do this in Gradle (PR welcome)._
+[source, groovy]
+----
+sourceSets.test.resources.srcDirs += ['src/test/e2e']
+
+task copyE2E(type: Copy) {
+    into 'build/resources/test/e2e'
+    exclude 'node_modules'
+    from 'src/test/e2e'
+}
+
+processTestResources.dependsOn copyE2E
+----
+
+The default `GatherTestResultsStrategy` assumes a Maven project and therefore you need to create a custom strategy that fits the Gradle layout.
+
+[source, java]
+----
+MochawesomeGatherTestResultsStrategy gradleTestResultStrategy = new MochawesomeGatherTestResultsStrategy(
+    FileSystems.getDefault().getPath("build", "resources", "test", "e2e", "cypress", "reports", "mochawesome"));
+    
+new CypressContainer()
+     .withGatherTestResultsStrategy(gradleTestResultStrategy)
+----
+
 
 === Usage with a @SpringBootTest
 
