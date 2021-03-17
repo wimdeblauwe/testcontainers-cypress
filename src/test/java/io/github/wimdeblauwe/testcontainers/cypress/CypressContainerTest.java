@@ -19,7 +19,7 @@ class CypressContainerTest {
     void testDefaultDockerImage() {
         CypressContainer container = new CypressContainer();
         container.configure();
-        assertThat(container.getDockerImageName()).isEqualTo("cypress/included:5.6.0");
+        assertThat(container.getDockerImageName()).isEqualTo("cypress/included:6.7.1");
         assertThat(container.getWorkingDirectory()).isEqualTo("/e2e");
     }
 
