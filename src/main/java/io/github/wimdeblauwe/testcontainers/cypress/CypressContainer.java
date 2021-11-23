@@ -309,9 +309,9 @@ public class CypressContainer extends GenericContainer<CypressContainer> {
         String pathInContainer = null;
         List<Bind> binds = getBinds();
         for (Bind bind : binds) {
-            String path = FilenameUtils.separatorsToSystem(bind.getPath());
+            String path = bind.getPath();
             if (pathOnHost.startsWith(path)) {
-                pathInContainer = Paths.get(path).relativize(pathOnHost).toString();
+                pathInContainer = FilenameUtils.separatorsToUnix(Paths.get(path).relativize(pathOnHost).toString());
             }
         }
 
