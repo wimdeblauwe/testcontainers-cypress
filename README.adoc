@@ -330,6 +330,10 @@ The `CYPRESS_RECORD_KEY` environment variable needs to be set for this to work.
 |===
 |Testcontainers-cypress |Testcontainers | Cypress
 
+|https://github.com/wimdeblauwe/testcontainers-cypress/releases/tag/testcontainers-cypress-1.6.1[1.6.1]
+|https://github.com/testcontainers/testcontainers-java/releases/tag/1.16.2[1.16.2]
+|https://docs.cypress.io/guides/references/changelog.html#9-1-0[9.1.0]
+
 |https://github.com/wimdeblauwe/testcontainers-cypress/releases/tag/testcontainers-cypress-1.6.0[1.6.0]
 |https://github.com/testcontainers/testcontainers-java/releases/tag/1.16.2[1.16.2]
 |https://docs.cypress.io/guides/references/changelog.html#9-1-0[9.1.0]
