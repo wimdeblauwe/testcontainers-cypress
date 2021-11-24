@@ -1,0 +1,110 @@
+{
+  "stats": {
+    "suites": 1,
+    "tests": 1,
+    "passes": 0,
+    "pending": 0,
+    "failures": 1,
+    "start": "2021-11-24T08:58:07.097Z",
+    "end": "2021-11-24T08:58:35.605Z",
+    "duration": 28508,
+    "testsRegistered": 1,
+    "passPercent": 0,
+    "pendingPercent": 0,
+    "other": 0,
+    "hasOther": false,
+    "skipped": 0,
+    "hasSkipped": false
+  },
+  "results": [
+    {
+      "uuid": "9e15ddcc-49c2-433b-bc15-0547d428f3d1",
+      "title": "",
+      "fullFile": "cypress/integration/firstFile.js",
+      "file": "cypress/integration/firstFile.js",
+      "beforeHooks": [],
+      "afterHooks": [],
+      "tests": [],
+      "suites": [
+        {
+          "uuid": "916db3c4-4819-458c-8708-7c5fd1f3ee5e",
+          "title": "First File",
+          "fullFile": "",
+          "file": "",
+          "beforeHooks": [],
+          "afterHooks": [],
+          "tests": [
+            {
+              "title": "Log in",
+              "fullTitle": "First File Log in",
+              "timedOut": null,
+              "duration": 7143,
+              "state": "failed",
+              "speed": null,
+              "pass": false,
+              "fail": true,
+              "pending": false,
+              "context": null,
+              "code": "cy.get('.welcome-message').should('contain', 'Please start search using form to the left.');",
+              "err": {
+                "message": "AssertionError: Timed out retrying after 4000ms: Expected to find element: `.welcome-message`, but never found it.",
+                "estack": "AssertionError: Timed out retrying after 4000ms: Expected to find element: `.welcome-message`, but never found it.\n    at Context.eval (http://localhost/__cypress/tests?p=cypress/integration/firstFile.js:170:32)",
+                "diff": null
+              },
+              "uuid": "d6b462ef-3bab-43f9-a5f3-d7f9942b6540",
+              "parentUUID": "916db3c4-4819-458c-8708-7c5fd1f3ee5e",
+              "isHook": false,
+              "skipped": false
+            }
+          ],
+          "suites": [],
+          "passes": [],
+          "failures": [
+            "d6b462ef-3bab-43f9-a5f3-d7f9942b6540"
+          ],
+          "pending": [],
+          "skipped": [],
+          "duration": 7143,
+          "root": false,
+          "rootEmpty": false,
+          "_timeout": 2000
+        }
+      ],
+      "passes": [],
+      "failures": [],
+      "pending": [],
+      "skipped": [],
+      "duration": 0,
+      "root": true,
+      "rootEmpty": true,
+      "_timeout": 2000
+    }
+  ],
+  "meta": {
+    "mocha": {
+      "version": "7.0.1"
+    },
+    "mochawesome": {
+      "options": {
+        "quiet": false,
+        "reportFilename": "mochawesome",
+        "saveHtml": false,
+        "saveJson": true,
+        "consoleReporter": "spec",
+        "useInlineDiffs": false,
+        "code": true
+      },
+      "version": "7.0.1"
+    },
+    "marge": {
+      "options": {
+        "id": "default",
+        "reportDir": "cypress/reports/mochawesome",
+        "overwrite": true,
+        "html": false,
+        "json": true
+      },
+      "version": "6.0.1"
+    }
+  }
+}

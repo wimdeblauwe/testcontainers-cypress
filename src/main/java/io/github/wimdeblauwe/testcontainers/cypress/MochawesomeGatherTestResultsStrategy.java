@@ -84,7 +84,10 @@ public class MochawesomeGatherTestResultsStrategy implements GatherTestResultsSt
                     CypressTestSuite cypressTestSuite = new CypressTestSuite(suite.getTitle());
                     List<SuiteTest> tests = suite.getTests();
                     for (SuiteTest test : tests) {
-                        cypressTestSuite.add(new CypressTest(test.getTitle(), !test.isFail()));
+                        CypressTest cypressTest = test.isFail()
+                                ? new CypressTest(test.getTitle(), false, test.getErr().getMessage(), test.getErr().getEstack())
+                                : new CypressTest(test.getTitle(), true);
+                        cypressTestSuite.add(cypressTest);
                     }
 
                     cypressTestSuites.add(cypressTestSuite);
@@ -164,6 +167,7 @@ public class MochawesomeGatherTestResultsStrategy implements GatherTestResultsSt
         private static class SuiteTest {
             private String title;
             private boolean fail;
+            private SuiteTestError err;
 
             public String getTitle() {
                 return title;
@@ -179,6 +183,36 @@ public class MochawesomeGatherTestResultsStrategy implements GatherTestResultsSt
 
             public void setFail(boolean fail) {
                 this.fail = fail;
+            }
+
+            public SuiteTestError getErr() {
+                return err;
+            }
+
+            public void setErr(SuiteTestError err) {
+                this.err = err;
+            }
+        }
+
+        @JsonIgnoreProperties(ignoreUnknown = true)
+        private static class SuiteTestError {
+            private String message;
+            private String estack;
+
+            public String getMessage() {
+                return message;
+            }
+
+            public void setMessage(String message) {
+                this.message = message;
+            }
+
+            public String getEstack() {
+                return estack;
+            }
+
+            public void setEstack(String estack) {
+                this.estack = estack;
             }
         }
     }
