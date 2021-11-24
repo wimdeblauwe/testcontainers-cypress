@@ -22,10 +22,10 @@ class MochawesomeGatherTestResultsStrategyTest {
         MochawesomeGatherTestResultsStrategy strategy = new MochawesomeGatherTestResultsStrategy(Paths.get(URI.create(url.toString())));
         CypressTestResults cypressTestResults = strategy.gatherTestResults();
         assertThat(cypressTestResults).isNotNull();
-        assertThat(cypressTestResults.getNumberOfTests()).isEqualTo(60);
+        assertThat(cypressTestResults.getNumberOfTests()).isEqualTo(61);
         assertThat(cypressTestResults.getNumberOfPassingTests()).isEqualTo(57);
-        assertThat(cypressTestResults.getNumberOfFailingTests()).isEqualTo(3);
-        assertThat(cypressTestResults.getSuites()).hasSize(19);
+        assertThat(cypressTestResults.getNumberOfFailingTests()).isEqualTo(4);
+        assertThat(cypressTestResults.getSuites()).hasSize(20);
         Optional<List<CypressTest>> tests = cypressTestResults.getSuites().stream()
                                                               .filter(cypressTestSuite -> cypressTestSuite.getTitle().equals("Verify Email Address"))
                                                               .findAny()
@@ -34,8 +34,32 @@ class MochawesomeGatherTestResultsStrategyTest {
                          .get(list(CypressTest.class))
                          .hasSize(2)
                          .extracting(CypressTest::getDescription,
-                                     CypressTest::isSuccess)
-                         .contains(tuple("should show error message if no code in url", true),
-                                   tuple("should show error message if code is unknown", true));
+                                 CypressTest::isSuccess,
+                                 CypressTest::getErrorMessage,
+                                 CypressTest::getStackTrace)
+                         .contains(tuple("should show error message if no code in url", true, null, null),
+                                   tuple("should show error message if code is unknown", true, null, null));
+    }
+
+    @Test
+    void shouldSaveErrorMessageAndStackTraceWhenTestIsFailed() throws IOException {
+        URL url = getClass().getResource("mochawesome");
+        MochawesomeGatherTestResultsStrategy strategy = new MochawesomeGatherTestResultsStrategy(Paths.get(URI.create(url.toString())));
+        CypressTestResults cypressTestResults = strategy.gatherTestResults();
+
+        Optional<List<CypressTest>> tests = cypressTestResults.getSuites().stream()
+                .filter(cypressTestSuite -> cypressTestSuite.getTitle().equals("First File"))
+                .findAny()
+                .map(CypressTestSuite::getTests);
+        assertThat(tests).isPresent()
+                .get(list(CypressTest.class))
+                .hasSize(1)
+                .extracting(CypressTest::getDescription,
+                        CypressTest::isSuccess,
+                        CypressTest::getErrorMessage,
+                        CypressTest::getStackTrace)
+                .contains(tuple("Log in", false,
+                        "AssertionError: Timed out retrying after 4000ms: Expected to find element: `.welcome-message`, but never found it.",
+                        "AssertionError: Timed out retrying after 4000ms: Expected to find element: `.welcome-message`, but never found it.\n    at Context.eval (http://localhost/__cypress/tests?p=cypress/integration/firstFile.js:170:32)"));
     }
 }

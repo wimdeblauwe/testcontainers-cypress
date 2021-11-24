@@ -220,7 +220,13 @@ public class CypressEndToEndTests {
     private void createContainerFromSuite(List<DynamicContainer> dynamicContainers, CypressTestSuite suite) {
         List<DynamicTest> dynamicTests = new ArrayList<>();
         for (CypressTest test : suite.getTests()) {
-            dynamicTests.add(DynamicTest.dynamicTest(test.getDescription(), () -> assertTrue(test.isSuccess())));
+            dynamicTests.add(DynamicTest.dynamicTest(test.getDescription(), () -> {
+                if (!test.isSuccess()) {
+                    LOGGER.error(test.getErrorMessage());
+                    LOGGER.error(test.getStackTrace());
+                }
+                assertTrue(test.isSuccess());
+            }));
         }
         dynamicContainers.add(DynamicContainer.dynamicContainer(suite.getTitle(), dynamicTests));
     }
