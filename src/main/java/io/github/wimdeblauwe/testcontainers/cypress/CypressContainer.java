@@ -8,6 +8,8 @@ import org.slf4j.LoggerFactory;
 import org.testcontainers.containers.BindMode;
 import org.testcontainers.containers.GenericContainer;
 import org.testcontainers.containers.output.OutputFrame;
+import org.testcontainers.images.RemoteDockerImage;
+import org.testcontainers.utility.DockerImageName;
 
 import javax.annotation.Nonnull;
 import java.io.IOException;
@@ -16,6 +18,7 @@ import java.nio.file.Paths;
 import java.time.Duration;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 import java.util.function.Consumer;
@@ -51,6 +54,21 @@ public class CypressContainer extends GenericContainer<CypressContainer> {
     }
 
     public CypressContainer(String dockerImageName) {
+        super(dockerImageName);
+        setWorkingDirectory("/e2e");
+    }
+
+    public CypressContainer(Future<String> dockerImageName) {
+        super(dockerImageName);
+        setWorkingDirectory("/e2e");
+    }
+
+    public CypressContainer(RemoteDockerImage remoteDockerImage) {
+        super(remoteDockerImage);
+        setWorkingDirectory("/e2e");
+    }
+
+    public CypressContainer(DockerImageName dockerImageName) {
         super(dockerImageName);
         setWorkingDirectory("/e2e");
     }
