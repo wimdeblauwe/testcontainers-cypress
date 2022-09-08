@@ -4,7 +4,7 @@
 
     <groupId>io.github.wimdeblauwe</groupId>
     <artifactId>testcontainers-cypress</artifactId>
-    <version>1.6.3-SNAPSHOT</version>
+    <version>1.6.4-SNAPSHOT</version>
     <name>Testcontainers Cypress</name>
     <description>A Testcontainers implementation for running Cypress e2e tests</description>
     <url>https://github.com/wimdeblauwe/testcontainers-cypress</url>
