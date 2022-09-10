@@ -17,33 +17,37 @@ class CypressContainerTest {
 
     @Test
     void testDefaultDockerImage() {
-        CypressContainer container = new CypressContainer();
-        container.configure();
-        assertThat(container.getDockerImageName()).isEqualTo("cypress/included:9.1.0");
-        assertThat(container.getWorkingDirectory()).isEqualTo("/e2e");
+        try (CypressContainer container = new CypressContainer()) {
+            container.configure();
+            assertThat(container.getDockerImageName()).isEqualTo("cypress/included:9.7.0");
+            assertThat(container.getWorkingDirectory()).isEqualTo("/e2e");
+        }
     }
 
     @Test
     void testCustomDockerImage() {
-        CypressContainer container = new CypressContainer("cypress/included:3.8.3");
-        container.configure();
-        assertThat(container.getDockerImageName()).isEqualTo("cypress/included:3.8.3");
-        assertThat(container.getWorkingDirectory()).isEqualTo("/e2e");
+        try (CypressContainer container = new CypressContainer("cypress/included:3.8.3")) {
+            container.configure();
+            assertThat(container.getDockerImageName()).isEqualTo("cypress/included:3.8.3");
+            assertThat(container.getWorkingDirectory()).isEqualTo("/e2e");
+        }
     }
 
     @Test
     void testDefaultBaseUrl() {
-        CypressContainer container = new CypressContainer();
-        container.configure();
-        assertThat(container.getEnvMap().get("CYPRESS_baseUrl")).isEqualTo("http://host.testcontainers.internal:8080");
+        try (CypressContainer container = new CypressContainer()) {
+            container.configure();
+            assertThat(container.getEnvMap().get("CYPRESS_baseUrl")).isEqualTo("http://host.testcontainers.internal:8080");
+        }
     }
 
     @Test
     void testWithLocalServerPort() {
-        CypressContainer container = new CypressContainer()
-                .withLocalServerPort(1313);
-        container.configure();
-        assertThat(container.getEnvMap().get("CYPRESS_baseUrl")).isEqualTo("http://host.testcontainers.internal:1313");
+        try (CypressContainer container = new CypressContainer()
+                .withLocalServerPort(1313)) {
+            container.configure();
+            assertThat(container.getEnvMap().get("CYPRESS_baseUrl")).isEqualTo("http://host.testcontainers.internal:1313");
+        }
     }
 
     @Test
@@ -54,10 +58,11 @@ class CypressContainerTest {
 
     @Test
     void testWithBaseUrl() {
-        CypressContainer container = new CypressContainer()
-                .withBaseUrl("https://www.wimdeblauwe.com");
-        container.configure();
-        assertThat(container.getEnvMap().get("CYPRESS_baseUrl")).isEqualTo("https://www.wimdeblauwe.com");
+        try (CypressContainer container = new CypressContainer()
+                .withBaseUrl("https://www.wimdeblauwe.com")) {
+            container.configure();
+            assertThat(container.getEnvMap().get("CYPRESS_baseUrl")).isEqualTo("https://www.wimdeblauwe.com");
+        }
     }
 
     @Test
@@ -76,11 +81,13 @@ class CypressContainerTest {
 
     @Test
     void testWithBrowser() {
-        CypressContainer container = new CypressContainer()
+        Set<Consumer<CreateContainerCmd>> createContainerCmdModifiers;
+        try (CypressContainer container = new CypressContainer()
                 .withBrowser("firefox")
-                .withAutoCleanReports(false);
-        container.configure();
-        Set<Consumer<CreateContainerCmd>> createContainerCmdModifiers = container.getCreateContainerCmdModifiers();
+                .withAutoCleanReports(false)) {
+            container.configure();
+            createContainerCmdModifiers = container.getCreateContainerCmdModifiers();
+        }
         assertThat(createContainerCmdModifiers).hasSize(1);
         Consumer<CreateContainerCmd> consumer = createContainerCmdModifiers.iterator().next();
         CreateContainerCmd cmd = mock(CreateContainerCmd.class);
@@ -104,10 +111,12 @@ class CypressContainerTest {
 
     @Test
     void testWithAutoCleanReports() {
-        CypressContainer container = new CypressContainer()
-                .withAutoCleanReports(true);
-        container.configure();
-        Set<Consumer<CreateContainerCmd>> createContainerCmdModifiers = container.getCreateContainerCmdModifiers();
+        Set<Consumer<CreateContainerCmd>> createContainerCmdModifiers;
+        try (CypressContainer container = new CypressContainer()
+                .withAutoCleanReports(true)) {
+            container.configure();
+            createContainerCmdModifiers = container.getCreateContainerCmdModifiers();
+        }
         assertThat(createContainerCmdModifiers).hasSize(1);
         Consumer<CreateContainerCmd> consumer = createContainerCmdModifiers.iterator().next();
         CreateContainerCmd cmd = mock(CreateContainerCmd.class);
@@ -119,12 +128,14 @@ class CypressContainerTest {
 
     @Test
     void testWithSpec() {
-        CypressContainer container = new CypressContainer()
+        Set<Consumer<CreateContainerCmd>> createContainerCmdModifiers;
+        try (CypressContainer container = new CypressContainer()
                 .withSpec("cypress/integration/todos.spec.js")
-                .withAutoCleanReports(false);
+                .withAutoCleanReports(false)) {
 
-        container.configure();
-        Set<Consumer<CreateContainerCmd>> createContainerCmdModifiers = container.getCreateContainerCmdModifiers();
+            container.configure();
+            createContainerCmdModifiers = container.getCreateContainerCmdModifiers();
+        }
         assertThat(createContainerCmdModifiers).hasSize(1);
         Consumer<CreateContainerCmd> consumer = createContainerCmdModifiers.iterator().next();
         CreateContainerCmd cmd = mock(CreateContainerCmd.class);
@@ -148,12 +159,14 @@ class CypressContainerTest {
 
     @Test
     void testWithClasspathResourcePath() {
-        CypressContainer container = new CypressContainer()
+        Set<Consumer<CreateContainerCmd>> createContainerCmdModifiers;
+        try (CypressContainer container = new CypressContainer()
                 .withClasspathResourcePath("io")
                 .withAutoCleanReports(true)
-                .withMochawesomeReportsAt(Paths.get("target", "test-classes", "io", "github", "wimdeblauwe"));
-        container.configure();
-        Set<Consumer<CreateContainerCmd>> createContainerCmdModifiers = container.getCreateContainerCmdModifiers();
+                .withMochawesomeReportsAt(Paths.get("target", "test-classes", "io", "github", "wimdeblauwe"))) {
+            container.configure();
+            createContainerCmdModifiers = container.getCreateContainerCmdModifiers();
+        }
         assertThat(createContainerCmdModifiers).hasSize(1);
         Consumer<CreateContainerCmd> consumer = createContainerCmdModifiers.iterator().next();
         CreateContainerCmd cmd = mock(CreateContainerCmd.class);
@@ -179,12 +192,14 @@ class CypressContainerTest {
 
     @Test
     void testWithRecord() {
-        CypressContainer container = new CypressContainer()
+        Set<Consumer<CreateContainerCmd>> createContainerCmdModifiers;
+        try (CypressContainer container = new CypressContainer()
                 .withAutoCleanReports(false)
-                .withRecord();
+                .withRecord()) {
 
-        container.configure();
-        Set<Consumer<CreateContainerCmd>> createContainerCmdModifiers = container.getCreateContainerCmdModifiers();
+            container.configure();
+            createContainerCmdModifiers = container.getCreateContainerCmdModifiers();
+        }
         assertThat(createContainerCmdModifiers).hasSize(1);
         Consumer<CreateContainerCmd> consumer = createContainerCmdModifiers.iterator().next();
         CreateContainerCmd cmd = mock(CreateContainerCmd.class);
@@ -195,12 +210,14 @@ class CypressContainerTest {
     @Test
     void testWithRecordKey() {
         String recordKey = UUID.randomUUID().toString();
-        CypressContainer container = new CypressContainer()
+        Set<Consumer<CreateContainerCmd>> createContainerCmdModifiers;
+        try (CypressContainer container = new CypressContainer()
                 .withAutoCleanReports(false)
-                .withRecord(recordKey);
+                .withRecord(recordKey)) {
 
-        container.configure();
-        Set<Consumer<CreateContainerCmd>> createContainerCmdModifiers = container.getCreateContainerCmdModifiers();
+            container.configure();
+            createContainerCmdModifiers = container.getCreateContainerCmdModifiers();
+        }
         assertThat(createContainerCmdModifiers).hasSize(1);
         Consumer<CreateContainerCmd> consumer = createContainerCmdModifiers.iterator().next();
         CreateContainerCmd cmd = mock(CreateContainerCmd.class);

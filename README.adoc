@@ -330,6 +330,10 @@ The `CYPRESS_RECORD_KEY` environment variable needs to be set for this to work.
 |===
 |Testcontainers-cypress |Testcontainers | Cypress
 
+|https://github.com/wimdeblauwe/testcontainers-cypress/releases/tag/testcontainers-cypress-1.6.3[1.6.3]
+|https://github.com/testcontainers/testcontainers-java/releases/tag/1.17.3[1.17.3]
+|https://docs.cypress.io/guides/references/changelog.html#9-7-0[9.7.0]
+
 |https://github.com/wimdeblauwe/testcontainers-cypress/releases/tag/testcontainers-cypress-1.6.2[1.6.2]
 |https://github.com/testcontainers/testcontainers-java/releases/tag/1.16.3[1.16.3]
 |https://docs.cypress.io/guides/references/changelog.html#9-1-0[9.1.0]
@@ -408,7 +412,7 @@ https://www.wimdeblauwe.com/blog/2020/2020-02-11-testcontainers-cypress-release-
 
 == Development
 
-* Builds are done on Travis: https://travis-ci.org/wimdeblauwe/testcontainers-cypress
+* Builds are done with GitHub Actions: https://github.com/wimdeblauwe/testcontainers-cypress/actions
 * Code quality is available via SonarQube: https://sonarcloud.io/dashboard?id=io.github.wimdeblauwe%3Atestcontainers-cypress
 
 == Deployment
