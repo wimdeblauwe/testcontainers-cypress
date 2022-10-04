@@ -21,17 +21,21 @@ The goal of this project is to make it easy to start https://www.cypress.io/[Cyp
 . Run `npx cypress open` to start the Cypress application. It will notice that this is the first startup and add some example tests.
 . Run `npm install cypress-multi-reporters mocha mochawesome --save-dev` to install Mochawesome as a test reporter. Testcontainers-cypress will
 use that to parse the results of the Cypress tests.
-. Update `cypress.json` as follows:
+. Update `cypress.config.js` as follows:
 +
-[source,json]
+[source,js]
 ----
-{
-  "baseUrl": "http://localhost:8080",
-  "reporter": "cypress-multi-reporters",
-  "reporterOptions": {
-    "configFile": "reporter-config.json"
+const { defineConfig } = require('cypress')
+
+module.exports = defineConfig({
+  e2e: {
+    baseUrl: 'http://localhost:8080/',
+    reporter: 'cypress-multi-reporters',
+    reporterOptions: {
+      configFile: 'reporter-config.json'
+    }
   }
-}
+})
 ----
 . Create a `reporter-config.json` file (next to `cypress.json`) and ensure it contains:
 +
