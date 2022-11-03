@@ -13,7 +13,7 @@
         <java.version>1.8</java.version>
 
         <!-- Dependencies -->
-        <testcontainers.version>1.17.3</testcontainers.version>
+        <testcontainers.version>1.17.5</testcontainers.version>
         <commons-lang3.version>3.9</commons-lang3.version>
         <slf4j-api.version>1.7.36</slf4j-api.version>
         <jackson.version>2.13.4</jackson.version>
@@ -83,7 +83,8 @@
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
-            <version>${jackson.version}</version>
+            <!-- Set back to ${jackson.version} when 2.14 is released -->
+            <version>2.13.4.2</version>
         </dependency>
         <dependency>
             <groupId>org.junit.jupiter</groupId>
