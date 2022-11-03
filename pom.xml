@@ -20,7 +20,7 @@
         <jsr305.version>3.0.2</jsr305.version>
 
         <!-- Test dependencies -->
-        <junit.version>5.9.0</junit.version>
+        <junit.version>5.9.1</junit.version>
         <assertj-core.version>3.23.1</assertj-core.version>
         <logback.version>1.4.0</logback.version>
         <mockito-core.version>4.8.0</mockito-core.version>
