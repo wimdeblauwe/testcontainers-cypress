@@ -37,8 +37,12 @@ public class MochawesomeGatherTestResultsStrategy implements GatherTestResultsSt
 
         try (DirectoryStream<Path> paths = Files.newDirectoryStream(jsonReportsPath, "*.json")) {
             for (Path path : paths) {
-                MochawesomeSpecRunReport specRunReport = objectMapper.readValue(path.toFile(), MochawesomeSpecRunReport.class);
-                specRunReport.fillInTestResults(results);
+                try {
+                    MochawesomeSpecRunReport specRunReport = objectMapper.readValue(path.toFile(), MochawesomeSpecRunReport.class);
+                    specRunReport.fillInTestResults(results);
+                } catch (IOException e) {
+                    LOGGER.error("Unable to read Mochawesome report from " + path.toAbsolutePath(), e);
+                }
             }
 
             return results;
