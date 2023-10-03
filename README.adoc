@@ -432,7 +432,7 @@ There is a workaround, however, which involves following steps:
 2. Enable rosetta emulation in *docker desktop for mac*:
 - General > Use virtualization framework
 - Features in Development > Use rosetta for x86/amd64 simulation on apple silicon
-3. Pull the *platform specific (linux/amd64) image* for cypress-included: docker pull --platform linux/amd64 cypress/included:12.9.0
+3. Pull the *platform specific (linux/amd64) image* for the cypress-included which you are using. For example: docker pull --platform linux/amd64 cypress/included:13.3.0
 
 == Links
 
