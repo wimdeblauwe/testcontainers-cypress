@@ -334,8 +334,8 @@ The `CYPRESS_RECORD_KEY` environment variable needs to be set for this to work.
 |Testcontainers-cypress |Testcontainers | Cypress
 
 |https://github.com/wimdeblauwe/testcontainers-cypress/releases/tag/testcontainers-cypress-1.9.0[1.9.0]
-|https://github.com/testcontainers/testcontainers-java/releases/tag/1.19.0[1.19.0]
-|https://docs.cypress.io/guides/references/changelog.html#13-2-0[13.2.0]
+|https://github.com/testcontainers/testcontainers-java/releases/tag/1.19.1[1.19.1]
+|https://docs.cypress.io/guides/references/changelog.html#13-3-0[13.3.0]
 
 |https://github.com/wimdeblauwe/testcontainers-cypress/releases/tag/testcontainers-cypress-1.8.0[1.8.0]
 |https://github.com/testcontainers/testcontainers-java/releases/tag/1.17.6[1.17.6]
