@@ -27,7 +27,7 @@ public class CypressContainer extends GenericContainer<CypressContainer> {
     private static final Logger LOGGER = LoggerFactory.getLogger(CypressContainer.class);
 
     private static final String CYPRESS_IMAGE = "cypress/included";
-    private static final String CYPRESS_VERSION = "12.9.0";
+    private static final String CYPRESS_VERSION = "13.2.0";
 
     private static final int DEFAULT_PORT = 8080;
     private static final String DEFAULT_BASE_URL = "http://host.testcontainers.internal";
@@ -111,7 +111,7 @@ public class CypressContainer extends GenericContainer<CypressContainer> {
      * @return the current instance
      */
     public CypressContainer withBaseUrl(String baseUrl) {
-        if (baseUrl == null || baseUrl.trim().length() == 0) {
+        if (baseUrl == null || baseUrl.trim().isEmpty()) {
             throw new IllegalArgumentException("baseUrl should not be blank");
         }
         this.baseUrl = baseUrl;
@@ -125,7 +125,7 @@ public class CypressContainer extends GenericContainer<CypressContainer> {
      * @return the current instance
      */
     public CypressContainer withBrowser(String browser) {
-        if (browser == null || browser.trim().length() == 0) {
+        if (browser == null || browser.trim().isEmpty()) {
             throw new IllegalArgumentException("browser should not be blank");
         }
         this.browser = browser;
@@ -144,7 +144,7 @@ public class CypressContainer extends GenericContainer<CypressContainer> {
      * @return the current instance
      */
     public CypressContainer withSpec(String spec) {
-        if (spec == null || spec.trim().length() == 0) {
+        if (spec == null || spec.trim().isEmpty()) {
             throw new IllegalArgumentException("spec should not be blank");
         }
 
@@ -192,7 +192,7 @@ public class CypressContainer extends GenericContainer<CypressContainer> {
      * @return the current instance
      */
     public CypressContainer withClasspathResourcePath(String resourcePath) {
-        if (resourcePath == null || resourcePath.trim().length() == 0) {
+        if (resourcePath == null || resourcePath.trim().isEmpty()) {
             throw new IllegalArgumentException("resourcePath should not be blank");
         }
         classpathResourcePath = resourcePath;

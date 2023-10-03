@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 import java.nio.file.Paths;
 import java.util.Set;
 import java.util.UUID;
-import java.util.function.Consumer;
+import org.testcontainers.core.CreateContainerCmdModifier;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
@@ -19,7 +19,7 @@ class CypressContainerTest {
     void testDefaultDockerImage() {
         try (CypressContainer container = new CypressContainer()) {
             container.configure();
-            assertThat(container.getDockerImageName()).isEqualTo("cypress/included:12.9.0");
+            assertThat(container.getDockerImageName()).isEqualTo("cypress/included:13.2.0");
             assertThat(container.getWorkingDirectory()).isEqualTo("/e2e");
         }
     }
@@ -37,7 +37,7 @@ class CypressContainerTest {
     void testDefaultBaseUrl() {
         try (CypressContainer container = new CypressContainer()) {
             container.configure();
-            assertThat(container.getEnvMap().get("CYPRESS_baseUrl")).isEqualTo("http://host.testcontainers.internal:8080");
+            assertThat(container.getEnvMap()).containsEntry("CYPRESS_baseUrl","http://host.testcontainers.internal:8080");
         }
     }
 
@@ -46,7 +46,7 @@ class CypressContainerTest {
         try (CypressContainer container = new CypressContainer()
                 .withLocalServerPort(1313)) {
             container.configure();
-            assertThat(container.getEnvMap().get("CYPRESS_baseUrl")).isEqualTo("http://host.testcontainers.internal:1313");
+            assertThat(container.getEnvMap()).containsEntry("CYPRESS_baseUrl","http://host.testcontainers.internal:1313");
         }
     }
 
@@ -61,7 +61,7 @@ class CypressContainerTest {
         try (CypressContainer container = new CypressContainer()
                 .withBaseUrl("https://www.wimdeblauwe.com")) {
             container.configure();
-            assertThat(container.getEnvMap().get("CYPRESS_baseUrl")).isEqualTo("https://www.wimdeblauwe.com");
+            assertThat(container.getEnvMap()).containsEntry("CYPRESS_baseUrl","https://www.wimdeblauwe.com");
         }
     }
 
@@ -81,7 +81,7 @@ class CypressContainerTest {
 
     @Test
     void testWithBrowser() {
-        Set<Consumer<CreateContainerCmd>> createContainerCmdModifiers;
+        Set<CreateContainerCmdModifier> createContainerCmdModifiers;
         try (CypressContainer container = new CypressContainer()
                 .withBrowser("firefox")
                 .withAutoCleanReports(false)) {
@@ -89,9 +89,9 @@ class CypressContainerTest {
             createContainerCmdModifiers = container.getCreateContainerCmdModifiers();
         }
         assertThat(createContainerCmdModifiers).hasSize(1);
-        Consumer<CreateContainerCmd> consumer = createContainerCmdModifiers.iterator().next();
+        CreateContainerCmdModifier createContainerCmdModifier = createContainerCmdModifiers.iterator().next();
         CreateContainerCmd cmd = mock(CreateContainerCmd.class);
-        consumer.accept(cmd);
+        createContainerCmdModifier.modify(cmd);
         verify(cmd).withEntrypoint("bash", "-c", "npm install && cypress run --headless --browser firefox");
     }
 
@@ -111,16 +111,16 @@ class CypressContainerTest {
 
     @Test
     void testWithAutoCleanReports() {
-        Set<Consumer<CreateContainerCmd>> createContainerCmdModifiers;
+        Set<CreateContainerCmdModifier> createContainerCmdModifiers;
         try (CypressContainer container = new CypressContainer()
                 .withAutoCleanReports(true)) {
             container.configure();
             createContainerCmdModifiers = container.getCreateContainerCmdModifiers();
         }
         assertThat(createContainerCmdModifiers).hasSize(1);
-        Consumer<CreateContainerCmd> consumer = createContainerCmdModifiers.iterator().next();
+        CreateContainerCmdModifier createContainerCmdModifier = createContainerCmdModifiers.iterator().next();
         CreateContainerCmd cmd = mock(CreateContainerCmd.class);
-        consumer.accept(cmd);
+        createContainerCmdModifier.modify(cmd);
         verify(cmd).withEntrypoint("bash",
                                    "-c",
                                    "rm -rf cypress/reports/mochawesome && npm install && cypress run --headless");
@@ -128,7 +128,7 @@ class CypressContainerTest {
 
     @Test
     void testWithSpec() {
-        Set<Consumer<CreateContainerCmd>> createContainerCmdModifiers;
+        Set<CreateContainerCmdModifier> createContainerCmdModifiers;
         try (CypressContainer container = new CypressContainer()
                 .withSpec("cypress/integration/todos.spec.js")
                 .withAutoCleanReports(false)) {
@@ -137,9 +137,9 @@ class CypressContainerTest {
             createContainerCmdModifiers = container.getCreateContainerCmdModifiers();
         }
         assertThat(createContainerCmdModifiers).hasSize(1);
-        Consumer<CreateContainerCmd> consumer = createContainerCmdModifiers.iterator().next();
+        CreateContainerCmdModifier createContainerCmdModifier = createContainerCmdModifiers.iterator().next();
         CreateContainerCmd cmd = mock(CreateContainerCmd.class);
-        consumer.accept(cmd);
+        createContainerCmdModifier.modify(cmd);
         verify(cmd).withEntrypoint("bash", "-c", "npm install && cypress run --headless --spec \"cypress/integration/todos.spec.js\"");
     }
 
@@ -159,7 +159,7 @@ class CypressContainerTest {
 
     @Test
     void testWithClasspathResourcePath() {
-        Set<Consumer<CreateContainerCmd>> createContainerCmdModifiers;
+        Set<CreateContainerCmdModifier> createContainerCmdModifiers;
         try (CypressContainer container = new CypressContainer()
                 .withClasspathResourcePath("io")
                 .withAutoCleanReports(true)
@@ -168,9 +168,9 @@ class CypressContainerTest {
             createContainerCmdModifiers = container.getCreateContainerCmdModifiers();
         }
         assertThat(createContainerCmdModifiers).hasSize(1);
-        Consumer<CreateContainerCmd> consumer = createContainerCmdModifiers.iterator().next();
+        CreateContainerCmdModifier createContainerCmdModifier = createContainerCmdModifiers.iterator().next();
         CreateContainerCmd cmd = mock(CreateContainerCmd.class);
-        consumer.accept(cmd);
+        createContainerCmdModifier.modify(cmd);
         verify(cmd).withEntrypoint("bash",
                                    "-c",
                                    "rm -rf github/wimdeblauwe && npm install && cypress run --headless");
@@ -192,7 +192,7 @@ class CypressContainerTest {
 
     @Test
     void testWithRecord() {
-        Set<Consumer<CreateContainerCmd>> createContainerCmdModifiers;
+        Set<CreateContainerCmdModifier> createContainerCmdModifiers;
         try (CypressContainer container = new CypressContainer()
                 .withAutoCleanReports(false)
                 .withRecord()) {
@@ -201,16 +201,16 @@ class CypressContainerTest {
             createContainerCmdModifiers = container.getCreateContainerCmdModifiers();
         }
         assertThat(createContainerCmdModifiers).hasSize(1);
-        Consumer<CreateContainerCmd> consumer = createContainerCmdModifiers.iterator().next();
+        CreateContainerCmdModifier createContainerCmdModifier = createContainerCmdModifiers.iterator().next();
         CreateContainerCmd cmd = mock(CreateContainerCmd.class);
-        consumer.accept(cmd);
+        createContainerCmdModifier.modify(cmd);
         verify(cmd).withEntrypoint("bash", "-c", "npm install && cypress run --headless --record");
     }
 
     @Test
     void testWithRecordKey() {
         String recordKey = UUID.randomUUID().toString();
-        Set<Consumer<CreateContainerCmd>> createContainerCmdModifiers;
+        Set<CreateContainerCmdModifier> createContainerCmdModifiers;
         try (CypressContainer container = new CypressContainer()
                 .withAutoCleanReports(false)
                 .withRecord(recordKey)) {
@@ -219,9 +219,9 @@ class CypressContainerTest {
             createContainerCmdModifiers = container.getCreateContainerCmdModifiers();
         }
         assertThat(createContainerCmdModifiers).hasSize(1);
-        Consumer<CreateContainerCmd> consumer = createContainerCmdModifiers.iterator().next();
+        CreateContainerCmdModifier createContainerCmdModifier = createContainerCmdModifiers.iterator().next();
         CreateContainerCmd cmd = mock(CreateContainerCmd.class);
-        consumer.accept(cmd);
+        createContainerCmdModifier.modify(cmd);
         verify(cmd).withEntrypoint("bash", "-c", "npm install && cypress run --headless --record --key " + recordKey);
     }
 
