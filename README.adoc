@@ -65,7 +65,6 @@ src/test/e2e/cypress/screenshots
 ----
 ====
 
-
 === Add dependency
 
 ==== Maven
@@ -334,6 +333,10 @@ The `CYPRESS_RECORD_KEY` environment variable needs to be set for this to work.
 |===
 |Testcontainers-cypress |Testcontainers | Cypress
 
+|https://github.com/wimdeblauwe/testcontainers-cypress/releases/tag/testcontainers-cypress-1.9.0[1.9.0]
+|https://github.com/testcontainers/testcontainers-java/releases/tag/1.19.1[1.19.1]
+|https://docs.cypress.io/guides/references/changelog.html#13-3-0[13.3.0]
+
 |https://github.com/wimdeblauwe/testcontainers-cypress/releases/tag/testcontainers-cypress-1.8.0[1.8.0]
 |https://github.com/testcontainers/testcontainers-java/releases/tag/1.17.6[1.17.6]
 |https://docs.cypress.io/guides/references/changelog.html#12-9-0[12.9.0]
@@ -418,6 +421,18 @@ The `CYPRESS_RECORD_KEY` environment variable needs to be set for this to work.
 |https://github.com/testcontainers/testcontainers-java/releases/tag/1.12.3[1.12.3]
 |https://docs.cypress.io/guides/references/changelog.html#3-8-0[3.8.0]
 |===
+
+== Troubleshooting
+
+When running on a mac with an M1 or M2 chip, only the _electron_ browser is included in the underlying https://hub.docker.com/r/cypress/included/[cypress image] this project uses. For more info please read https://github.com/cypress-io/cypress-docker-images/issues/695[this].
+
+There is a workaround, however, which involves following steps:
+
+1. install rosetta 2: `softwareupdate --install-rosetta`
+2. Enable rosetta emulation in *docker desktop for mac*:
+- General > Use virtualization framework
+- Features in Development > Use rosetta for x86/amd64 simulation on apple silicon
+3. Pull the *platform specific (linux/amd64) image* for the cypress-included which you are using. For example: docker pull --platform linux/amd64 cypress/included:13.3.0
 
 == Links
 
