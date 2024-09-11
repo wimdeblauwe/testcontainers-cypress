@@ -19,16 +19,16 @@ class CypressContainerTest {
     void testDefaultDockerImage() {
         try (CypressContainer container = new CypressContainer()) {
             container.configure();
-            assertThat(container.getDockerImageName()).isEqualTo("cypress/included:13.3.0");
+            assertThat(container.getDockerImageName()).isEqualTo("cypress/included:13.14.2");
             assertThat(container.getWorkingDirectory()).isEqualTo("/e2e");
         }
     }
 
     @Test
     void testCustomDockerImage() {
-        try (CypressContainer container = new CypressContainer("cypress/included:3.8.3")) {
+        try (CypressContainer container = new CypressContainer("cypress/included:13.14.0")) {
             container.configure();
-            assertThat(container.getDockerImageName()).isEqualTo("cypress/included:3.8.3");
+            assertThat(container.getDockerImageName()).isEqualTo("cypress/included:13.14.0");
             assertThat(container.getWorkingDirectory()).isEqualTo("/e2e");
         }
     }
