@@ -1,8 +1,6 @@
 = Cypress Testcontainer
 :toc: macro
 
-image:https://img.shields.io/github/workflow/status/wimdeblauwe/testcontainers-cypress/Build["Build Status", link="https://github.com/wimdeblauwe/testcontainers-cypress/actions/workflows/build.yml"]
-image:https://sonarcloud.io/api/project_badges/measure?project=io.github.wimdeblauwe%3Atestcontainers-cypress&metric=coverage["Coverage", link="https://sonarcloud.io/dashboard?id=io.github.wimdeblauwe%3Atestcontainers-cypress"]
 image:https://maven-badges.herokuapp.com/maven-central/io.github.wimdeblauwe/testcontainers-cypress/badge.svg["Maven Central", link="https://search.maven.org/search?q=a:testcontainers-cypress"]
 
 toc::[]
