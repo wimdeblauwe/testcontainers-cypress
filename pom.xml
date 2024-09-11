@@ -22,7 +22,7 @@
         <!-- Test dependencies -->
         <junit.version>5.9.1</junit.version>
         <assertj-core.version>3.23.1</assertj-core.version>
-        <logback.version>1.2.11</logback.version>
+        <logback.version>1.2.13</logback.version>
         <mockito-core.version>4.8.0</mockito-core.version>
 
         <!-- Plugins -->
