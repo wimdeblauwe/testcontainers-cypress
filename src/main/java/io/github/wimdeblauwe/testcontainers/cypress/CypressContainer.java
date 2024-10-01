@@ -48,6 +48,7 @@ public class CypressContainer extends GenericContainer<CypressContainer> {
     private Duration maximumTotalTestDuration = DEFAULT_MAX_TOTAL_TEST_DURATION;
     private GatherTestResultsStrategy gatherTestResultsStrategy = DEFAULT_GATHER_TEST_RESULTS_STRATEGY;
     private boolean autoCleanReports = DEFAULT_AUTO_CLEAN_REPORTS;
+    private String npmRunArguments = "--loglevel silent";
 
     public CypressContainer() {
         this(CYPRESS_IMAGE + ":" + CYPRESS_VERSION);
@@ -255,6 +256,18 @@ public class CypressContainer extends GenericContainer<CypressContainer> {
     }
 
     /**
+    * Set additional run arguments for npm install.
+    * <br>
+    * The default is <code>--loglevel silent</code>
+    *
+    * @param args additional arguments
+    */
+    public CypressContainer withNpmRunArguments(String args) {
+        this.npmRunArguments = args;
+        return self();
+    }
+
+    /**
      * Waits until the Cypress tests are done and returns the results of the tests.
      *
      * @return the Cypress test results
@@ -315,7 +328,7 @@ public class CypressContainer extends GenericContainer<CypressContainer> {
                    .append(reportsPathInContainer)
                    .append(" && ");
         }
-        builder.append("npm install && ");
+        builder.append("npm install " + npmRunArguments + " && ");
         builder.append("cypress run ")
                .append(buildCypressRunArguments());
         return builder.toString();
