@@ -92,7 +92,23 @@ class CypressContainerTest {
         CreateContainerCmdModifier createContainerCmdModifier = createContainerCmdModifiers.iterator().next();
         CreateContainerCmd cmd = mock(CreateContainerCmd.class);
         createContainerCmdModifier.modify(cmd);
-        verify(cmd).withEntrypoint("bash", "-c", "npm install && cypress run --headless --browser firefox");
+        verify(cmd).withEntrypoint("bash", "-c", "npm install --loglevel silent && cypress run --headless --browser firefox");
+    }
+
+    @Test
+    void testNpmRunArguments() {
+        Set<CreateContainerCmdModifier> createContainerCmdModifiers;
+        try (CypressContainer container = new CypressContainer()
+                .withBrowser("firefox")
+                .withNpmRunArugments("--loglevel verbose")) {
+            container.configure();
+            createContainerCmdModifiers = container.getCreateContainerCmdModifiers();
+        }
+        assertThat(createContainerCmdModifiers).hasSize(1);
+        CreateContainerCmdModifier createContainerCmdModifier = createContainerCmdModifiers.iterator().next();
+        CreateContainerCmd cmd = mock(CreateContainerCmd.class);
+        createContainerCmdModifier.modify(cmd);
+        verify(cmd).withEntrypoint("bash", "-c", "npm install --loglevel verbose && cypress run --headless --browser firefox");
     }
 
     @Test
@@ -123,7 +139,7 @@ class CypressContainerTest {
         createContainerCmdModifier.modify(cmd);
         verify(cmd).withEntrypoint("bash",
                                    "-c",
-                                   "rm -rf cypress/reports/mochawesome && npm install && cypress run --headless");
+                                   "rm -rf cypress/reports/mochawesome && npm install --loglevel silent && cypress run --headless");
     }
 
     @Test
@@ -140,7 +156,7 @@ class CypressContainerTest {
         CreateContainerCmdModifier createContainerCmdModifier = createContainerCmdModifiers.iterator().next();
         CreateContainerCmd cmd = mock(CreateContainerCmd.class);
         createContainerCmdModifier.modify(cmd);
-        verify(cmd).withEntrypoint("bash", "-c", "npm install && cypress run --headless --spec \"cypress/integration/todos.spec.js\"");
+        verify(cmd).withEntrypoint("bash", "-c", "npm install --loglevel silent && cypress run --headless --spec \"cypress/integration/todos.spec.js\"");
     }
 
     @Test
@@ -173,7 +189,7 @@ class CypressContainerTest {
         createContainerCmdModifier.modify(cmd);
         verify(cmd).withEntrypoint("bash",
                                    "-c",
-                                   "rm -rf github/wimdeblauwe && npm install && cypress run --headless");
+                                   "rm -rf github/wimdeblauwe && npm install --loglevel silent && cypress run --headless");
     }
 
     @Test
@@ -204,7 +220,7 @@ class CypressContainerTest {
         CreateContainerCmdModifier createContainerCmdModifier = createContainerCmdModifiers.iterator().next();
         CreateContainerCmd cmd = mock(CreateContainerCmd.class);
         createContainerCmdModifier.modify(cmd);
-        verify(cmd).withEntrypoint("bash", "-c", "npm install && cypress run --headless --record");
+        verify(cmd).withEntrypoint("bash", "-c", "npm install --loglevel silent && cypress run --headless --record");
     }
 
     @Test
@@ -222,7 +238,7 @@ class CypressContainerTest {
         CreateContainerCmdModifier createContainerCmdModifier = createContainerCmdModifiers.iterator().next();
         CreateContainerCmd cmd = mock(CreateContainerCmd.class);
         createContainerCmdModifier.modify(cmd);
-        verify(cmd).withEntrypoint("bash", "-c", "npm install && cypress run --headless --record --key " + recordKey);
+        verify(cmd).withEntrypoint("bash", "-c", "npm install --loglevel silent && cypress run --headless --record --key " + recordKey);
     }
 
 }
