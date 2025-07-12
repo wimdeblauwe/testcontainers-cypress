@@ -14,7 +14,7 @@
 
         <!-- Dependencies -->
         <testcontainers.version>1.19.8</testcontainers.version>
-        <commons-lang3.version>3.9</commons-lang3.version>
+        <commons-lang3.version>3.18.0</commons-lang3.version>
         <slf4j-api.version>1.7.36</slf4j-api.version>
         <jackson.version>2.13.4</jackson.version>
         <jsr305.version>3.0.2</jsr305.version>
