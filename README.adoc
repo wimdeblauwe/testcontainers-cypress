@@ -15,7 +15,7 @@ The goal of this project is to make it easy to start https://www.cypress.io/[Cyp
 
 . Create `src/test/e2e` directory in your project.
 . Run `npm init` in that directory. This will generate a `package.json` file.
-. Run `npm install cypress --save-dev` to install Cypress as a development dependency.
+. Run `npm install cypress@15.10.0 --save-dev` to install Cypress as a development dependency. You can also use a different version of Cypress, just make sure that you provide the same version in the `CypressContainer` constructor to avoid compatibility issues.
 . Run `npx cypress open` to start the Cypress application. It will notice that this is the first startup and add some example tests.
 . Run `npm install cypress-multi-reporters mocha mochawesome --save-dev` to install Mochawesome as a test reporter. Testcontainers-cypress will
 use that to parse the results of the Cypress tests.
