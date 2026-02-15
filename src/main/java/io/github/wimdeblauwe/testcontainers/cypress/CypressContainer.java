@@ -27,7 +27,7 @@ public class CypressContainer extends GenericContainer<CypressContainer> {
     private static final Logger LOGGER = LoggerFactory.getLogger(CypressContainer.class);
 
     private static final String CYPRESS_IMAGE = "cypress/included";
-    private static final String CYPRESS_VERSION = "13.14.2";
+    private static final String CYPRESS_VERSION = "15.10.0";
 
     private static final int DEFAULT_PORT = 8080;
     private static final String DEFAULT_BASE_URL = "http://host.testcontainers.internal";
