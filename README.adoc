@@ -324,12 +324,20 @@ The `CYPRESS_RECORD_KEY` environment variable needs to be set for this to work.
 |withAutoCleanReports(boolean autoCleanReports)
 |Set if the Cypress test reports should be automatically cleaned before each run or not.
 |true
+
+|withNpmRunArguments(String args)
+|Adds additional arguments to the `npm install` command. For example, you can add `--loglevel silent`.
+|
 |===
 
 == Testcontainers & Cypress versions compatibility
 
 |===
 |Testcontainers-cypress |Testcontainers | Cypress
+
+|https://github.com/wimdeblauwe/testcontainers-cypress/releases/tag/testcontainers-cypress-1.10.0[1.10.0]
+|https://github.com/testcontainers/testcontainers-java/releases/tag/1.21.4[1.21.4]
+|https://docs.cypress.io/guides/references/changelog.html#15-10-0[15.10.0]
 
 |https://github.com/wimdeblauwe/testcontainers-cypress/releases/tag/testcontainers-cypress-1.9.1[1.9.1]
 |https://github.com/testcontainers/testcontainers-java/releases/tag/1.19.8[1.19.8]
