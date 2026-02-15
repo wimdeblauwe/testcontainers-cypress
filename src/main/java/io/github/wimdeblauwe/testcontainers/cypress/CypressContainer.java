@@ -48,6 +48,7 @@ public class CypressContainer extends GenericContainer<CypressContainer> {
     private Duration maximumTotalTestDuration = DEFAULT_MAX_TOTAL_TEST_DURATION;
     private GatherTestResultsStrategy gatherTestResultsStrategy = DEFAULT_GATHER_TEST_RESULTS_STRATEGY;
     private boolean autoCleanReports = DEFAULT_AUTO_CLEAN_REPORTS;
+    private String npmRunArguments = "";
 
     public CypressContainer() {
         this(CYPRESS_IMAGE + ":" + CYPRESS_VERSION);
@@ -255,6 +256,17 @@ public class CypressContainer extends GenericContainer<CypressContainer> {
     }
 
     /**
+     * Set additional run arguments for npm install.
+     * <br>
+     *
+     * @param args additional arguments
+     */
+    public CypressContainer withNpmRunArguments(String args) {
+        this.npmRunArguments = args;
+        return self();
+    }
+
+    /**
      * Waits until the Cypress tests are done and returns the results of the tests.
      *
      * @return the Cypress test results
@@ -285,18 +297,18 @@ public class CypressContainer extends GenericContainer<CypressContainer> {
         builder.append("--headless");
         if (browser != null) {
             builder.append(" --browser ")
-                   .append(browser);
+                    .append(browser);
         }
         if (spec != null) {
             builder.append(" --spec \"")
-                   .append(spec)
-                   .append('\"');
+                    .append(spec)
+                    .append('\"');
         }
         if (record) {
             builder.append(" --record");
             if (recordKey != null) {
                 builder.append(" --key ")
-                       .append(recordKey);
+                        .append(recordKey);
             }
         }
         return builder.toString();
@@ -312,12 +324,17 @@ public class CypressContainer extends GenericContainer<CypressContainer> {
             }
             LOGGER.debug("Removing reports from {}", reportsPathInContainer);
             builder.append("rm -rf ")
-                   .append(reportsPathInContainer)
-                   .append(" && ");
+                    .append(reportsPathInContainer)
+                    .append(" && ");
         }
-        builder.append("npm install && ");
+        builder.append("npm install ");
+        if (StringUtils.isNotBlank(npmRunArguments)) {
+            builder.append(npmRunArguments)
+                    .append(' ');
+        }
+        builder.append("&& ");
         builder.append("cypress run ")
-               .append(buildCypressRunArguments());
+                .append(buildCypressRunArguments());
         return builder.toString();
     }
 
