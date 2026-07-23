@@ -16,7 +16,7 @@
         <testcontainers.version>1.21.4</testcontainers.version>
         <commons-lang3.version>3.20.0</commons-lang3.version>
         <slf4j-api.version>1.7.36</slf4j-api.version>
-        <jackson.version>2.21</jackson.version>
+        <jackson.version>2.21.5</jackson.version>
         <jsr305.version>3.0.2</jsr305.version>
 
         <!-- Test dependencies -->
@@ -83,7 +83,7 @@
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
-            <version>${jackson.version}.0</version> <!-- jackson databind just can't follow the same versioning as the other jackson modules -->
+            <version>${jackson.version}</version> <!-- jackson databind just can't follow the same versioning as the other jackson modules -->
         </dependency>
         <dependency>
             <groupId>org.junit.jupiter</groupId>
