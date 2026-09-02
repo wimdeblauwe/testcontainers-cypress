@@ -1,9 +1,9 @@
 = Cypress Testcontainer
 :toc: macro
 
-image:https://maven-badges.herokuapp.com/maven-central/io.github.wimdeblauwe/testcontainers-cypress/badge.svg["Maven Central", link="https://search.maven.org/search?q=a:testcontainers-cypress"]
+image:https://img.shields.io/maven-central/v/io.github.wimdeblauwe/testcontainers-cypress[Maven Central Version]
 
-toc::[]
+📕 Want to write production-ready Spring Boot starters? Read https://leanpub.com/crafting-spring-boot-starters[Crafting Spring Boot Starters].
 
 == Goal
 
