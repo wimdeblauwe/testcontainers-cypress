@@ -130,7 +130,7 @@ class CypressContainerTest {
     void testWithSpec() {
         Set<CreateContainerCmdModifier> createContainerCmdModifiers;
         try (CypressContainer container = new CypressContainer()
-                .withSpec("cypress/integration/todos.spec.js")
+                .withSpec("cypress/e2e/todos.cy.js")
                 .withAutoCleanReports(false)) {
 
             container.configure();
@@ -140,7 +140,7 @@ class CypressContainerTest {
         CreateContainerCmdModifier createContainerCmdModifier = createContainerCmdModifiers.iterator().next();
         CreateContainerCmd cmd = mock(CreateContainerCmd.class);
         createContainerCmdModifier.modify(cmd);
-        verify(cmd).withEntrypoint("bash", "-c", "npm install && cypress run --headless --spec \"cypress/integration/todos.spec.js\"");
+        verify(cmd).withEntrypoint("bash", "-c", "npm install && cypress run --headless --spec \"cypress/e2e/todos.cy.js\"");
     }
 
     @Test

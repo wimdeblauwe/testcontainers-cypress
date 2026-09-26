@@ -121,8 +121,15 @@ public class CypressContainer extends GenericContainer<CypressContainer> {
 
     /**
      * Sets the browser to use when running the tests.
+     * <p>
+     * If not set, Cypress falls back to the bundled Electron browser, which is deprecated since Cypress 16
+     * and will be removed in a future version. It is recommended to explicitly set a browser (e.g. <code>chrome</code>)
+     * or configure <code>defaultBrowser</code> in <code>cypress.config.js</code>.
+     * <p>
+     * Note that the <code>cypress/included</code> image does not contain Chrome or Edge on <code>linux/arm64</code>
+     * (e.g. Apple Silicon), only Electron and Firefox.
      *
-     * @param browser the name of the browser (e.g. chrome, firefox, electron, ...)
+     * @param browser the name of the browser (e.g. chrome, firefox, edge, electron, ...)
      * @return the current instance
      */
     public CypressContainer withBrowser(String browser) {
@@ -136,8 +143,8 @@ public class CypressContainer extends GenericContainer<CypressContainer> {
     /**
      * Sets the test(s) to run.
      * <p>
-     * This can be a single test: <code>cypress/integration/todos.spec.js</code>
-     * or multiple: <code>cypress/integration/login/**</code>
+     * This can be a single test: <code>cypress/e2e/todos.cy.js</code>
+     * or multiple: <code>cypress/e2e/login/**</code>
      * <p>
      * By default (meaning not calling this method), all tests are run.
      *
@@ -167,7 +174,7 @@ public class CypressContainer extends GenericContainer<CypressContainer> {
 
     /**
      * Set the relative path of where the cypress tests are (the path is the location of where the
-     * <code>cypress.json</code> file is)
+     * <code>cypress.config.js</code> file is)
      * <br>
      * The default is <code>e2e</code>.
      * <br>

@@ -35,7 +35,7 @@ module.exports = defineConfig({
   }
 })
 ----
-. Create a `reporter-config.json` file (next to `cypress.json`) and ensure it contains:
+. Create a `reporter-config.json` file (next to `cypress.config.js`) and ensure it contains:
 +
 [source,json]
 ----
@@ -277,7 +277,7 @@ The `CypressContainer` instance can be customized with the following options:
 
 |CypressContainer(String dockerImageName)
 |Allows to specify the docker image to use
-|cypress/included:4.0.1
+|cypress/included:16.1.0
 
 |withLocalServerPort(int port)
 |Set the port where the server is running on. It will use http://host.testcontainers.internal as hostname with the given port as the Cypress base URL. For a `@SpringBootTest`, pass the injected `@LocalServerPort` here.
@@ -288,12 +288,14 @@ The `CypressContainer` instance can be customized with the following options:
 |http://host.testcontainers.internal:8080
 
 |withBrowser(String browser)
-|Set the browser to use when running the tests (E.g. `electron`, `chrome`, `firefox`)
-|electron
+|Set the browser to use when running the tests (E.g. `chrome`, `firefox`, `edge`, `electron`).
+Electron is deprecated as a test browser since Cypress 16 and will be removed in a future version, so it is recommended to set a browser explicitly (e.g. `chrome`), or to configure `defaultBrowser` in `cypress.config.js`.
+Note that Chrome and Edge are not available in the `cypress/included` image on `linux/arm64` (see <<Troubleshooting>>).
+|Not set, so Cypress uses its own default (the deprecated Electron browser, unless `defaultBrowser` is configured)
 
 |withSpec(String spec)
-|Sets the test(s) to run. This can be a single test (e.g. `cypress/integration/todos.spec.js`)
-or multiple (e.g. `cypress/integration/login/**`)
+|Sets the test(s) to run. This can be a single test (e.g. `cypress/e2e/todos.cy.js`)
+or multiple (e.g. `cypress/e2e/login/**`)
 | By default (meaning not calling this method), all tests are run.
 
 |withRecord()
@@ -306,7 +308,7 @@ The `CYPRESS_RECORD_KEY` environment variable needs to be set for this to work.
 | Not enabled by default
 
 |withClasspathResourcePath(String resourcePath)
-|Set the relative path of where the cypress tests are (the path is the location of where the `cypress.json` file is)
+|Set the relative path of where the cypress tests are (the path is the location of where the `cypress.config.js` file is)
 |e2e
 
 |withMaximumTotalTestDuration(Duration duration)
@@ -438,7 +440,7 @@ The `CYPRESS_RECORD_KEY` environment variable needs to be set for this to work.
 
 == Troubleshooting
 
-When running on a mac with an M1 or M2 chip, only the _electron_ browser is included in the underlying https://hub.docker.com/r/cypress/included/[cypress image] this project uses. For more info please read https://github.com/cypress-io/cypress-docker-images/issues/695[this].
+When running on a Mac with Apple Silicon (M1, M2, ...), only the _electron_ and _firefox_ browsers are included in the underlying https://hub.docker.com/r/cypress/included/[cypress image] this project uses. For more info please read https://github.com/cypress-io/cypress-docker-images/issues/695[this].
 
 There is a workaround, however, which involves following steps:
 
